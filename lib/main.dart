@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'screens/splash_screen.dart';
 
 void main() {
@@ -16,6 +17,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF7A9B76),
+        ),
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context).textTheme,
         ),
         useMaterial3: true,
       ),

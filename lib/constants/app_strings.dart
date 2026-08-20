@@ -1,13 +1,23 @@
-/// Shared text constants and labels used throughout the Lender application.
+/// Shared text constants and labels used throughout the Lendr application.
 class AppStrings {
-  // Private constructor to prevent instantiation.
   AppStrings._();
 
   // App General
-  static const String appName = 'Lender';
+  static const String appName = 'Lendr';
 
-  // Screen Titles & Headers
-  static const String splashTitle = 'Lender';
-  static const String loginTitle = 'Login';
-  static const String signupTitle = 'Sign Up';
+  // Login Screen
+  static const String welcomeBack = 'Welcome back!';
+  static const String loginSubtitle = 'Log in to continue to Lender.';
+  static const String emailLabel = 'Email';
+  static const String emailPlaceholder = 'Enter your email';
+  static const String passwordLabel = 'Password';
+  static const String passwordPlaceholder = 'Enter your password';
+  static const String forgotPassword = 'Forgot password?';
+  static const String loginButton = 'LOGIN';
+  static const String dontHaveAccount = "Don't have an account? ";
+  static const String signUp = 'Sign up';
+
+  // Signup Screen
+  static const String createAccount = 'Create Account';
+  static const String signupSubtitle = 'Sign up to start lending and borrowing.';
 }
