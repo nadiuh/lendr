@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
+import '../utils/validators.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
 
   bool _isPasswordVisible = false;
+  bool _hasSubmitted = false;
 
   @override
   void dispose() {
@@ -26,6 +28,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleLogin() {
+    setState(() {
+      _hasSubmitted = true;
+    });
+
     if (_formKey.currentState?.validate() ?? false) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -112,6 +118,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: Form(
                           key: _formKey,
+                          autovalidateMode: _hasSubmitted
+                              ? AutovalidateMode.onUserInteraction
+                              : AutovalidateMode.disabled,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -127,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               TextFormField(
                                 controller: _emailController,
                                 keyboardType: TextInputType.emailAddress,
+                                validator: Validators.validateEmail,
                                 style: GoogleFonts.poppins(
                                   fontSize: 15,
                                   color: AppColors.textPrimary,
@@ -136,6 +146,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   hintStyle: GoogleFonts.poppins(
                                     fontSize: 14,
                                     color: AppColors.textLight,
+                                  ),
+                                  errorStyle: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    color: AppColors.error,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                   prefixIcon: const Icon(
                                     Icons.mail_outline_rounded,
@@ -163,6 +178,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                       width: 1.8,
                                     ),
                                   ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.borderError,
+                                      width: 1.4,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.borderError,
+                                      width: 1.8,
+                                    ),
+                                  ),
                                 ),
                               ),
 
@@ -180,6 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               TextFormField(
                                 controller: _passwordController,
                                 obscureText: !_isPasswordVisible,
+                                validator: (value) => Validators.validatePassword(value),
                                 style: GoogleFonts.poppins(
                                   fontSize: 15,
                                   color: AppColors.textPrimary,
@@ -189,6 +219,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   hintStyle: GoogleFonts.poppins(
                                     fontSize: 14,
                                     color: AppColors.textLight,
+                                  ),
+                                  errorStyle: GoogleFonts.poppins(
+                                    fontSize: 12,
+                                    color: AppColors.error,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                   prefixIcon: const Icon(
                                     Icons.lock_outline_rounded,
@@ -227,6 +262,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderRadius: BorderRadius.circular(14.0),
                                     borderSide: const BorderSide(
                                       color: AppColors.borderFocused,
+                                      width: 1.8,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.borderError,
+                                      width: 1.4,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14.0),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.borderError,
                                       width: 1.8,
                                     ),
                                   ),

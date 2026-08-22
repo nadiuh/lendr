@@ -2,7 +2,6 @@
 class AppStrings {
   AppStrings._();
 
-  // App General
   static const String appName = 'Lendr';
 
   // Login Screen
@@ -18,6 +17,23 @@ class AppStrings {
   static const String signUp = 'Sign up';
 
   // Signup Screen
-  static const String createAccount = 'Create Account';
-  static const String signupSubtitle = 'Sign up to start lending and borrowing.';
+  static const String createYourAccount = 'Create your account';
+  static const String signupSubtitle = 'Join the Lendr community.';
+  static const String fullNameLabel = 'Full Name';
+  static const String fullNamePlaceholder = 'Enter your full name';
+  static const String passwordCreatePlaceholder = 'Create a password';
+  static const String confirmPasswordLabel = 'Confirm Password';
+  static const String confirmPasswordPlaceholder = 'Confirm your password';
+  static const String createAccountButton = 'CREATE ACCOUNT';
+  static const String alreadyHaveAccount = 'Already have an account? ';
+  static const String logIn = 'Log in';
+
+  // Validation Error Messages
+  static const String errorEmptyFullName = 'Please enter your full name';
+  static const String errorEmptyEmail = 'Please enter your email';
+  static const String errorInvalidEmail = 'Please enter a valid email address';
+  static const String errorEmptyPassword = 'Please enter your password';
+  static const String errorEmptyCreatePassword = 'Please enter a password';
+  static const String errorEmptyConfirmPassword = 'Please confirm your password';
+  static const String errorPasswordMismatch = 'Passwords do not match';
 }

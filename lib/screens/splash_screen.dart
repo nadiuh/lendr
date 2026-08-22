@@ -17,7 +17,6 @@ class _SplashScreenState extends State<SplashScreen>
 
   Timer? _navigationTimer;
 
-  // Rich warm beige / creme background color
   static const Color _backgroundColor = Color(0xFFEFE8DB);
 
   @override
