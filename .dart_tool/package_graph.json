@@ -1,10 +1,10 @@
 {
   "roots": [
-    "lendr"
+    "lendr_new"
   ],
   "packages": [
     {
-      "name": "lendr",
+      "name": "lendr_new",
       "version": "1.0.0+1",
       "dependencies": [
         "cupertino_icons",
@@ -53,13 +53,8 @@
       ]
     },
     {
-      "name": "vector_math",
-      "version": "2.2.0",
-      "dependencies": []
-    },
-    {
       "name": "test_api",
-      "version": "0.7.11",
+      "version": "0.7.12",
       "dependencies": [
         "async",
         "boolean_selector",
@@ -92,13 +87,8 @@
       "dependencies": []
     },
     {
-      "name": "meta",
-      "version": "1.18.0",
-      "dependencies": []
-    },
-    {
       "name": "matcher",
-      "version": "0.12.19",
+      "version": "0.12.20",
       "dependencies": [
         "async",
         "meta",
@@ -164,6 +154,11 @@
       "dependencies": []
     },
     {
+      "name": "meta",
+      "version": "1.19.0",
+      "dependencies": []
+    },
+    {
       "name": "leak_tracker_testing",
       "version": "3.0.2",
       "dependencies": [
@@ -182,6 +177,11 @@
         "path",
         "vm_service"
       ]
+    },
+    {
+      "name": "vector_math",
+      "version": "2.4.2",
+      "dependencies": []
     },
     {
       "name": "term_glyph",
@@ -222,7 +222,7 @@
     },
     {
       "name": "vm_service",
-      "version": "15.2.0",
+      "version": "15.3.0",
       "dependencies": []
     }
   ],
