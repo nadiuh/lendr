@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../utils/validators.dart';
+import 'profile_screen.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,10 +34,12 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     if (_formKey.currentState?.validate() ?? false) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Logging in...'),
-          duration: Duration(seconds: 1),
+      // NOTE: Temporary navigation setup for development and testing.
+      // ProfileScreen should later be replaced with HomeScreen when the Home Screen is implemented.
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ProfileScreen(),
         ),
       );
     }
