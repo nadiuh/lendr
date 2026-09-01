@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lendr_new/main.dart';
 import 'package:lendr_new/screens/login_screen.dart';
+import 'package:lendr_new/screens/profile_screen.dart';
 import 'package:lendr_new/screens/signup_screen.dart';
 import 'package:lendr_new/screens/splash_screen.dart';
 import 'package:lendr_new/utils/validators.dart';
@@ -118,5 +119,68 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Passwords do not match'), findsNothing);
     });
+
+    testWidgets('ProfileScreen logout dialog cancel stays on profile screen', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ProfileScreen(),
+        ),
+      );
+
+      // Scroll to and tap Log Out button
+      await tester.ensureVisible(find.widgetWithText(ElevatedButton, 'Log Out'));
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Log Out'));
+      await tester.pumpAndSettle();
+
+      // Verify dialog is shown
+      expect(find.text('Are you sure you want to log out of your Lendr account?'), findsOneWidget);
+
+      // Tap Cancel
+      await tester.tap(find.widgetWithText(TextButton, 'Cancel'));
+      await tester.pumpAndSettle();
+
+      // Verify dialog is closed and still on ProfileScreen
+      expect(find.text('Are you sure you want to log out of your Lendr account?'), findsNothing);
+      expect(find.byType(ProfileScreen), findsOneWidget);
+      expect(find.byType(LoginScreen), findsNothing);
+    });
+
+    testWidgets('ProfileScreen logout confirmation navigates to LoginScreen with "Logging out" SnackBar', (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ProfileScreen(),
+        ),
+      );
+
+      // Scroll to and tap Log Out button
+      await tester.ensureVisible(find.widgetWithText(ElevatedButton, 'Log Out'));
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Log Out'));
+      await tester.pumpAndSettle();
+
+      // In the dialog, tap 'Log Out' button
+      final dialogLogoutBtn = find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.widgetWithText(ElevatedButton, 'Log Out'),
+      );
+      await tester.tap(dialogLogoutBtn);
+      await tester.pumpAndSettle();
+
+      // Verify SnackBar with 'Logging out' is displayed
+      expect(find.text('Logging out'), findsOneWidget);
+      // Verify navigated to LoginScreen
+      expect(find.byType(LoginScreen), findsOneWidget);
+      expect(find.byType(ProfileScreen), findsNothing);
+    });
   });
 }
+
