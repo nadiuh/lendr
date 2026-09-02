@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'constants/app_colors.dart';
 import 'constants/app_strings.dart';
-import 'screens/terms_conditions_screen.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           surface: AppColors.surface,
         ),
       ),
-      home: const TermsConditionsScreen(),
+      home: const HomeScreen(),
     );
   }
 }
