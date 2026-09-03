@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../constants/app_colors.dart';
+import 'borrow_details_screen.dart';
+
 
 class SelectDurationScreen extends StatefulWidget {
   const SelectDurationScreen({super.key});
@@ -90,11 +93,12 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          'https://picsum.photos/200', // Replace with your image asset
+                        child: Image.asset(
+                          'assets/images/Product_images/DSLR.jpg',
+                          width: double.infinity,
+                          height: double.infinity,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                          const Icon(Icons.camera_alt, size: 40, color: Colors.grey),
+                          alignment: const Alignment(0.0, 0.456),
                         ),
                       ),
                     ),
@@ -104,7 +108,7 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Canon DSLR Camera',
+                            'Canon EOS 5D Mark IV DSLR',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -116,7 +120,7 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
                               Icon(Icons.star, color: Colors.amber, size: 16),
                               SizedBox(width: 4),
                               Text(
-                                '4.8 ',
+                                '4.9 ',
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                               ),
                               Text(
@@ -131,7 +135,7 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
                               Icon(Icons.person_outline, size: 16, color: Colors.grey.shade600),
                               const SizedBox(width: 4),
                               Text(
-                                'by John Doe',
+                                'by Rahat Ahmed',
                                 style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                               ),
                             ],
@@ -366,14 +370,31 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
             // Continue Button
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 52,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  backgroundColor: const Color(0xFF4A6844),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(28),
+                  ),
                 ),
-                onPressed: () {},
-                child: const Text('Continue', style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BorrowDetailsScreen(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'Continue',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 12),
