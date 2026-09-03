@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, dynamic>> _featuredItems = const [
     {
       'title': 'Power Drill',
-      'price': '\৳5000',
+      'price': '৳5000',
       'distance': '0.8 miles away',
       'owner': 'Taseen Ehfaz',
       'rating': 4.9,
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
     },
     {
       'title': 'Camping Tent (4 Person)',
-      'price': '\৳3000',
+      'price': '৳3000',
       'distance': '1.2 miles away',
       'owner': 'Samin Yasar',
       'rating': 5.0,
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     },
     {
       'title': 'Digital Camera Kit',
-      'price': '\৳7000',
+      'price': '৳7000',
       'distance': '2.5 miles away',
       'owner': 'Sajid Mahin',
       'rating': 4.8,
@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Image.asset(
                 'lib/images/Lendr_logo.png',
                 fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) => const Icon(
+                errorBuilder: (_, _, _) => const Icon(
                   Icons.eco_rounded,
                   color: AppColors.primary,
                 ),
@@ -218,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: _categories.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
               final cat = _categories[index];
               final isSelected = _categoryIndex == index;
@@ -312,7 +312,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Image.asset(
                     item['image'] as String,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
+                    errorBuilder: (_, _, _) => Container(
                       color: AppColors.cream,
                       child: const Icon(Icons.image_outlined, color: AppColors.textLight, size: 40),
                     ),

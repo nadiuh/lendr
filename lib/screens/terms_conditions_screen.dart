@@ -72,7 +72,7 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
                   ),
                   child: ListView.separated(
                     itemCount: _terms.length,
-                    separatorBuilder: (_, __) => const Divider(color: AppColors.border, height: 24),
+                    separatorBuilder: (_, _) => const Divider(color: AppColors.border, height: 24),
                     itemBuilder: (context, index) {
                       final item = _terms[index];
                       return Column(
