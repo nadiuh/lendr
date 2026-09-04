@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
 import 'select_duration_screen.dart';
 
 class ProductDetailsScreen extends StatelessWidget {

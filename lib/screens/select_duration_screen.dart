@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
 import 'borrow_details_screen.dart';
 
 
@@ -162,85 +161,87 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
             const SizedBox(height: 16),
 
             // Duration Option Radio Cards
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _tiers.length,
-              itemBuilder: (context, index) {
-                final tier = _tiers[index];
-                final isSelected = _selectedIndex == index;
+            RadioGroup<int>(
+              groupValue: _selectedIndex,
+              onChanged: (val) {
+                if (val != null) setState(() => _selectedIndex = val);
+              },
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _tiers.length,
+                itemBuilder: (context, index) {
+                  final tier = _tiers[index];
+                  final isSelected = _selectedIndex == index;
 
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedIndex = index;
-                    });
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: isSelected ? const Color(0xFFF1F6F2) : Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: isSelected ? primaryColor : Colors.grey.shade300,
-                        width: isSelected ? 1.5 : 1.0,
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: isSelected ? const Color(0xFFF1F6F2) : Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: isSelected ? primaryColor : Colors.grey.shade300,
+                          width: isSelected ? 1.5 : 1.0,
+                        ),
                       ),
-                    ),
-                    child: Row(
-                      children: [
-                        Radio<int>(
-                          value: index,
-                          groupValue: _selectedIndex,
-                          activeColor: primaryColor,
-                          onChanged: (val) {
-                            if (val != null) setState(() => _selectedIndex = val);
-                          },
-                        ),
-                        Text(
-                          tier['label'],
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                        if (tier['isPopular']) ...[
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Row(
-                              children: [
-                                Text('Popular ', style: TextStyle(fontSize: 11)),
-                                Icon(Icons.star, size: 11, color: primaryColor),
-                              ],
-                            ),
+                      child: Row(
+                        children: [
+                          Radio<int>(
+                            value: index,
+                            activeColor: primaryColor,
                           ),
-                        ],
-                        const Spacer(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              '৳${tier['price']} / day',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                          Text(
+                            tier['label'],
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
+                          if (tier['isPopular']) ...[
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Row(
+                                children: [
+                                  Text('Popular ', style: TextStyle(fontSize: 11)),
+                                  Icon(Icons.star, size: 11, color: primaryColor),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 2),
-                            Text(
-                              tier['rangeText'],
-                              style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
-                            ),
                           ],
-                        ),
-                      ],
+                          const Spacer(),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                '৳${tier['price']} / day',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                tier['rangeText'],
+                                style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
 
             // Tip Banner
