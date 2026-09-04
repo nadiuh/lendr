@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'constants/app_colors.dart';
+import 'constants/app_strings.dart';
+import 'screens/home_screen.dart';
 import 'screens/splash_screen.dart';
 
 void main() {
@@ -11,13 +14,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Lendr',
+      title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF7A9B76),
-        ),
         useMaterial3: true,
+        scaffoldBackgroundColor: AppColors.background,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          primary: AppColors.primary,
+          surface: AppColors.surface,
+        ),
       ),
       home: const SplashScreen(),
     );
