@@ -10,19 +10,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _navIndex = 0;
-  int _categoryIndex = 0;
+  int _currentNavIndex = 0;
+  int _selectedCategoryIndex = 0;
 
-  // Categories list
+  // Categories data
   final List<Map<String, dynamic>> _categories = const [
-    {'title': 'Tools', 'icon': Icons.construction_rounded, 'color': AppColors.primary},
-    {'title': 'Electronics', 'icon': Icons.devices_rounded, 'color': Color(0xFF68645A)},
-    {'title': 'Kitchen', 'icon': Icons.blender_rounded, 'color': AppColors.primaryDark},
-    {'title': 'Outdoor', 'icon': Icons.forest_rounded, 'color': Color(0xFFBA1A1A)},
-    {'title': 'More', 'icon': Icons.more_horiz_rounded, 'color': Color(0xFF434840)},
+    {'title': 'Tools', 'icon': Icons.construction_rounded},
+    {'title': 'Electronics', 'icon': Icons.devices_rounded},
+    {'title': 'Kitchen', 'icon': Icons.blender_rounded},
+    {'title': 'Outdoor', 'icon': Icons.forest_rounded},
+    {'title': 'More', 'icon': Icons.more_horiz_rounded},
   ];
 
-  // Featured items list using local asset images
+  // Featured items data
   final List<Map<String, dynamic>> _featuredItems = const [
     {
       'title': 'Power Drill',
@@ -58,13 +58,13 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: _buildDrawer(),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           children: [
             _buildHeroBanner(),
             const SizedBox(height: 16),
             _buildSearchBar(),
             const SizedBox(height: 24),
-            _buildCategorySection(),
+            _buildCategoriesSection(),
             const SizedBox(height: 24),
             _buildFeaturedSection(),
           ],
@@ -74,8 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {},
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: const Icon(Icons.add_rounded, size: 28),
+        child: const Icon(Icons.add_rounded),
       ),
       bottomNavigationBar: _buildBottomNavBar(),
     );
@@ -87,40 +86,23 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: AppColors.background,
       elevation: 0,
       centerTitle: true,
-      leading: Builder(
-        builder: (context) => IconButton(
-          icon: const Icon(Icons.menu_rounded, color: AppColors.primaryDark),
-          onPressed: () => Scaffold.of(context).openDrawer(),
-        ),
-      ),
       title: const Text(
         AppStrings.appName,
         style: TextStyle(
           color: AppColors.primaryDark,
-          fontSize: 26,
+          fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 16.0),
-          child: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.border, width: 1.5),
-            ),
-            child: ClipOval(
-              child: Image.asset(
-                'lib/images/Lendr_logo.png',
-                fit: BoxFit.contain,
-                errorBuilder: (_, _, _) => const Icon(
-                  Icons.eco_rounded,
-                  color: AppColors.primary,
-                ),
-              ),
+          padding: const EdgeInsets.only(right: 16),
+          child: CircleAvatar(
+            radius: 18,
+            backgroundColor: AppColors.surface,
+            child: Image.asset(
+              'lib/images/Lendr_logo.png',
+              errorBuilder: (_, _, _) => const Icon(Icons.eco, color: AppColors.primary),
             ),
           ),
         ),
@@ -131,10 +113,10 @@ class _HomeScreenState extends State<HomeScreen> {
   // --- Hero Banner ---
   Widget _buildHeroBanner() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
       decoration: BoxDecoration(
         color: AppColors.primary,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         children: const [
@@ -143,16 +125,15 @@ class _HomeScreenState extends State<HomeScreen> {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
-              height: 1.2,
             ),
           ),
           SizedBox(height: 8),
           Text(
-            'Join your neighborhood sharing economy and save money while reducing waste.',
+            'Join your neighborhood sharing economy and save money.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xFFF0F5EE), fontSize: 13),
+            style: TextStyle(color: Colors.white70, fontSize: 13),
           ),
         ],
       ),
@@ -161,91 +142,82 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // --- Search Bar ---
   Widget _buildSearchBar() {
-    return Container(
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.search_rounded, color: AppColors.textLight),
-          const SizedBox(width: 8),
-          const Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search for tools, gear...',
-                hintStyle: TextStyle(color: AppColors.textLight, fontSize: 14),
-                border: InputBorder.none,
-                isDense: true,
-              ),
-            ),
-          ),
-          ElevatedButton(
+    return TextField(
+      decoration: InputDecoration(
+        hintText: 'Search for tools, gear...',
+        prefixIcon: const Icon(Icons.search, color: AppColors.textLight),
+        suffixIcon: Padding(
+          padding: const EdgeInsets.all(6),
+          child: ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
-              elevation: 0,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             ),
-            child: const Text('Find', style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text('Find'),
           ),
-        ],
+        ),
+        filled: true,
+        fillColor: AppColors.surface,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: const BorderSide(color: AppColors.border),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25),
+          borderSide: const BorderSide(color: AppColors.border),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
     );
   }
 
-  // --- Categories Section ---
-  Widget _buildCategorySection() {
+  // --- Category Section ---
+  Widget _buildCategoriesSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
           'Browse Categories',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
         ),
         const SizedBox(height: 12),
         SizedBox(
-          height: 88,
+          height: 80,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: _categories.length,
             separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
-              final cat = _categories[index];
-              final isSelected = _categoryIndex == index;
-
-              return GestureDetector(
-                onTap: () => setState(() => _categoryIndex = index),
+              final isSelected = _selectedCategoryIndex == index;
+              return InkWell(
+                onTap: () => setState(() => _selectedCategoryIndex = index),
+                borderRadius: BorderRadius.circular(16),
                 child: Container(
-                  width: 80,
+                  width: 76,
                   decoration: BoxDecoration(
                     color: isSelected ? AppColors.cream : AppColors.surface,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isSelected ? AppColors.primary : AppColors.border,
-                      width: isSelected ? 1.5 : 1.0,
+                      width: isSelected ? 1.5 : 1,
                     ),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(cat['icon'] as IconData, color: cat['color'] as Color, size: 24),
-                      const SizedBox(height: 6),
+                      Icon(
+                        _categories[index]['icon'] as IconData,
+                        color: isSelected ? AppColors.primary : AppColors.primaryDark,
+                      ),
+                      const SizedBox(height: 4),
                       Text(
-                        cat['title'] as String,
+                        _categories[index]['title'] as String,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          color: isSelected ? AppColors.primaryDark : AppColors.textPrimary,
                         ),
                       ),
                     ],
@@ -262,66 +234,57 @@ class _HomeScreenState extends State<HomeScreen> {
   // --- Featured Items Section ---
   Widget _buildFeaturedSection() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: const [
             Text(
               'Featured Nearby',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
             ),
             Text(
               'See all',
-              style: TextStyle(
-                color: AppColors.primaryDark,
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
-              ),
+              style: TextStyle(color: AppColors.primaryDark, fontWeight: FontWeight.w600),
             ),
           ],
         ),
         const SizedBox(height: 12),
-        ..._featuredItems.map((item) => _buildFeaturedCard(item)),
+        ..._featuredItems.map((item) => _buildItemCard(item)),
       ],
     );
   }
 
-  // --- Featured Item Card ---
-  Widget _buildFeaturedCard(Map<String, dynamic> item) {
-    return Container(
+  // --- Item Card ---
+  Widget _buildItemCard(Map<String, dynamic> item) {
+    return Card(
+      elevation: 0,
       margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border.withValues(alpha: 0.5)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: AppColors.border),
       ),
+      clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image with Rating Badge
+          // Image with rating
           Stack(
             children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Image.asset(
-                    item['image'] as String,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => Container(
-                      color: AppColors.cream,
-                      child: const Icon(Icons.image_outlined, color: AppColors.textLight, size: 40),
-                    ),
+              AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Image.asset(
+                  item['image'] as String,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, _, _) => Container(
+                    color: AppColors.cream,
+                    child: const Icon(Icons.image, size: 40, color: AppColors.textLight),
                   ),
                 ),
               ),
               Positioned(
-                top: 10,
-                right: 10,
+                top: 8,
+                right: 8,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
@@ -330,8 +293,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.star_rounded, color: Colors.amber, size: 16),
-                      const SizedBox(width: 3),
+                      const Icon(Icons.star, color: Colors.amber, size: 14),
+                      const SizedBox(width: 2),
                       Text(
                         '${item['rating']}',
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
@@ -345,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // Details
           Padding(
-            padding: const EdgeInsets.all(14.0),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -354,32 +317,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text(
                       item['title'] as String,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       '${item['price']}/day',
-                      style: const TextStyle(
-                        color: AppColors.primaryDark,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.primaryDark),
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.location_on_rounded, color: AppColors.textSecondary, size: 14),
+                    const Icon(Icons.location_on, size: 14, color: AppColors.textSecondary),
                     const SizedBox(width: 4),
-                    Text(
-                      item['distance'] as String,
-                      style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
-                    ),
+                    Text(item['distance'] as String, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                   ],
                 ),
-                const SizedBox(height: 10),
-                const Divider(color: AppColors.border, height: 1),
-                const SizedBox(height: 10),
+                const Divider(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -388,17 +342,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         const CircleAvatar(
                           radius: 12,
                           backgroundColor: AppColors.cream,
-                          child: Icon(Icons.person_rounded, color: AppColors.textSecondary, size: 16),
+                          child: Icon(Icons.person, size: 14, color: AppColors.textSecondary),
                         ),
                         const SizedBox(width: 6),
-                        Text(
-                          item['owner'] as String,
-                          style: const TextStyle(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13,
-                          ),
-                        ),
+                        Text(item['owner'] as String, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
                       ],
                     ),
                     ElevatedButton(
@@ -406,11 +353,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
-                      child: const Text('Request', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
+                      child: const Text('Request'),
                     ),
                   ],
                 ),
@@ -426,101 +372,66 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildDrawer() {
     return Drawer(
       backgroundColor: AppColors.cream,
-      child: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 22,
-                    backgroundColor: AppColors.primary,
-                    child: Icon(Icons.person_rounded, color: Colors.white, size: 24),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Salman F. Rahman',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      Text(
-                        'Verified Member',
-                        style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
-                      ),
-                      Text(
-                        'Trust Score: 98',
-                        style: TextStyle(color: AppColors.primaryDark, fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const UserAccountsDrawerHeader(
+            decoration: BoxDecoration(color: AppColors.primary),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Colors.white,
+              child: Icon(Icons.person, color: AppColors.primary, size: 36),
             ),
-            const SizedBox(height: 16),
-            _buildDrawerTile(Icons.home_rounded, 'Home', isSelected: true),
-            _buildDrawerTile(Icons.handshake_rounded, 'Borrow Requests'),
-            _buildDrawerTile(Icons.notifications_rounded, 'Alerts'),
-            _buildDrawerTile(Icons.list_alt_rounded, 'My Listings'),
-            _buildDrawerTile(Icons.history_rounded, 'Borrowing History'),
-            _buildDrawerTile(Icons.account_balance_wallet_rounded, 'Wallet'),
-          ],
-        ),
+            accountName: Text('Salman F. Rahman', style: TextStyle(fontWeight: FontWeight.bold)),
+            accountEmail: Text('Verified Member • Trust Score: 98'),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text('Home'),
+            selected: true,
+            selectedColor: AppColors.primaryDark,
+            onTap: () => Navigator.pop(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.handshake),
+            title: const Text('Borrow Requests'),
+            onTap: () => Navigator.pop(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.notifications),
+            title: const Text('Alerts'),
+            onTap: () => Navigator.pop(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.list_alt),
+            title: const Text('My Listings'),
+            onTap: () => Navigator.pop(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.history),
+            title: const Text('Borrowing History'),
+            onTap: () => Navigator.pop(context),
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_balance_wallet),
+            title: const Text('Wallet'),
+            onTap: () => Navigator.pop(context),
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildDrawerTile(IconData icon, String title, {bool isSelected = false}) {
-    return ListTile(
-      leading: Icon(icon, color: isSelected ? AppColors.primaryDark : AppColors.textSecondary),
-      title: Text(
-        title,
-        style: TextStyle(
-          color: isSelected ? AppColors.primaryDark : AppColors.textPrimary,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-        ),
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      tileColor: isSelected ? AppColors.primary.withValues(alpha: 0.15) : Colors.transparent,
-      onTap: () => Navigator.pop(context),
     );
   }
 
   // --- Bottom Navigation Bar ---
   Widget _buildBottomNavBar() {
     return NavigationBar(
-      selectedIndex: _navIndex,
-      onDestinationSelected: (i) => setState(() => _navIndex = i),
+      selectedIndex: _currentNavIndex,
+      onDestinationSelected: (index) => setState(() => _currentNavIndex = index),
       backgroundColor: AppColors.surface,
-      indicatorColor: AppColors.primaryLight.withValues(alpha: 0.4),
       destinations: const [
-        NavigationDestination(
-          icon: Icon(Icons.home_outlined),
-          selectedIcon: Icon(Icons.home_rounded, color: AppColors.primaryDark),
-          label: 'Home',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.handshake_outlined),
-          selectedIcon: Icon(Icons.handshake_rounded, color: AppColors.primaryDark),
-          label: 'Requests',
-        ),
-        NavigationDestination(
-          icon: Badge(smallSize: 8, child: Icon(Icons.notifications_outlined)),
-          selectedIcon: Badge(smallSize: 8, child: Icon(Icons.notifications_rounded, color: AppColors.primaryDark)),
-          label: 'Alerts',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.person_outline_rounded),
-          selectedIcon: Icon(Icons.person_rounded, color: AppColors.primaryDark),
-          label: 'Profile',
-        ),
+        NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: 'Home'),
+        NavigationDestination(icon: Icon(Icons.handshake_outlined), selectedIcon: Icon(Icons.handshake), label: 'Requests'),
+        NavigationDestination(icon: Icon(Icons.notifications_outlined), selectedIcon: Icon(Icons.notifications), label: 'Alerts'),
+        NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: 'Profile'),
       ],
     );
   }
