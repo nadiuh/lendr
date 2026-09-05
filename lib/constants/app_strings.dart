@@ -36,4 +36,12 @@ class AppStrings {
   static const String errorEmptyCreatePassword = 'Please enter a password';
   static const String errorEmptyConfirmPassword = 'Please confirm your password';
   static const String errorPasswordMismatch = 'Passwords do not match';
+  // App General
+  static const String appName = 'Lendr';
+
+  // Screen Titles & Headers
+  static const String splashTitle = 'Lendr';
+  static const String loginTitle = 'Login';
+  static const String signupTitle = 'Sign Up';
+  static const String termsAndConditionsTitle = 'Terms & Conditions';
 }
