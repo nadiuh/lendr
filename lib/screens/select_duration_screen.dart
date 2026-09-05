@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import 'borrow_details_screen.dart';
 
-
 class SelectDurationScreen extends StatefulWidget {
   const SelectDurationScreen({super.key});
 
@@ -11,8 +10,8 @@ class SelectDurationScreen extends StatefulWidget {
 }
 
 class _SelectDurationScreenState extends State<SelectDurationScreen> {
-  // Currently selected duration tier index
-  int _selectedIndex = 2; // Default selected: 8 - 14 Days
+  int _selectedDuration = 8;
+  int _selectedIndex = 2;
 
   final List<Map<String, dynamic>> _tiers = [
     {
@@ -41,104 +40,371 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
     },
   ];
 
+  int _getTierIndex(int days) {
+    if (days <= 2) {
+      return 0;
+    } else if (days <= 7) {
+      return 1;
+    } else if (days <= 14) {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
+
+  int get _dailyPrice {
+    if (_selectedDuration <= 2) {
+      return 800;
+    } else if (_selectedDuration <= 7) {
+      return 650;
+    } else if (_selectedDuration <= 14) {
+      return 550;
+    } else {
+      return 450;
+    }
+  }
+
+  int get _totalPayable {
+    return _dailyPrice * _selectedDuration;
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    return months[month - 1];
+  }
+
+  String _getCurrentDate() {
+    final now = DateTime.now();
+
+    return '${now.day} ${_getMonthName(now.month)} ${now.year}';
+  }
+
+  void _selectTier(int? index) {
+    if (index == null) {
+      return;
+    }
+
+    int defaultDuration;
+
+    switch (index) {
+      case 0:
+        defaultDuration = 2;
+        break;
+      case 1:
+        defaultDuration = 7;
+        break;
+      case 2:
+        defaultDuration = 8;
+        break;
+      case 3:
+        defaultDuration = 15;
+        break;
+      default:
+        defaultDuration = 8;
+    }
+
+    setState(() {
+      _selectedIndex = index;
+      _selectedDuration = defaultDuration;
+    });
+  }
+
+  void _changeDuration(int? value) {
+    if (value == null) {
+      return;
+    }
+
+    setState(() {
+      _selectedDuration = value;
+      _selectedIndex = _getTierIndex(value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFF1E4620); // Dark green accent
-    const backgroundColor = Color(0xFFF9F6EE); // Off-white/cream background
-
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: backgroundColor,
+        backgroundColor: AppColors.background,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: AppColors.textPrimary,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: const Text(
           'Select Duration',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Summary Card
-            Card(
-              elevation: 0,
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-                side: BorderSide(color: Colors.grey.shade200),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(12),
+                    const Text(
+                      'How long do you need it?',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
                       ),
-                      child: ClipRRect(
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Choose the number of days you want to borrow this item.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          'assets/images/Product_images/DSLR.jpg',
-                          width: double.infinity,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                          alignment: const Alignment(0.0, 0.456),
+                        border: Border.all(
+                          color: AppColors.border,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          const Expanded(
+                            child: Text(
+                              'Duration',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
+                          DropdownButton<int>(
+                            value: _selectedDuration,
+                            underline: const SizedBox(),
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: AppColors.primary,
+                            ),
+                            items: List.generate(
+                              30,
+                                  (index) {
+                                final days = index + 1;
+
+                                return DropdownMenuItem<int>(
+                                  value: days,
+                                  child: Text(
+                                    '$days ${days == 1 ? 'Day' : 'Days'}',
+                                    style: const TextStyle(
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            onChanged: _changeDuration,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Pricing Tiers',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    RadioGroup<int>(
+                      groupValue: _selectedIndex,
+                      onChanged: _selectTier,
+                      child: Column(
+                        children: List.generate(
+                          _tiers.length,
+                              (index) {
+                            final tier = _tiers[index];
+                            final bool isSelected =
+                                _selectedIndex == index;
+
+                            return GestureDetector(
+                              onTap: () {
+                                _selectTier(index);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(bottom: 12),
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? AppColors.cream
+                                      : AppColors.surface,
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? AppColors.borderFocused
+                                        : AppColors.border,
+                                    width: isSelected ? 2 : 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Radio<int>(
+                                      value: index,
+                                      activeColor: AppColors.primary,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  tier['label'],
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                    FontWeight.w600,
+                                                    color:
+                                                    AppColors.textPrimary,
+                                                  ),
+                                                ),
+                                              ),
+                                              if (tier['isPopular'])
+                                                Container(
+                                                  padding:
+                                                  const EdgeInsets
+                                                      .symmetric(
+                                                    horizontal: 8,
+                                                    vertical: 4,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                    AppColors.primary,
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                      8,
+                                                    ),
+                                                  ),
+                                                  child: const Text(
+                                                    'Popular',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                      FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Text(
+                                            '৳${tier['price']} / day',
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                              AppColors.primaryDark,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            tier['rangeText'],
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color:
+                                              AppColors.textSecondary,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
+                    const SizedBox(height: 12),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                          color: AppColors.border,
+                        ),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Canon EOS 5D Mark IV DSLR',
+                            'Payment Breakdown',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 6),
-                          const Row(
-                            children: [
-                              Icon(Icons.star, color: Colors.amber, size: 16),
-                              SizedBox(width: 4),
-                              Text(
-                                '4.9 ',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                              ),
-                              Text(
-                                '(32 reviews)',
-                                style: TextStyle(color: Colors.grey, fontSize: 13),
-                              ),
-                            ],
+                          const SizedBox(height: 16),
+                          _buildRow(
+                            'Start Date',
+                            _getCurrentDate(),
                           ),
-                          const SizedBox(height: 6),
-                          Row(
-                            children: [
-                              Icon(Icons.person_outline, size: 16, color: Colors.grey.shade600),
-                              const SizedBox(width: 4),
-                              Text(
-                                'by Rahat Ahmed',
-                                style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
-                              ),
-                            ],
+                          _buildRow(
+                            'Duration',
+                            '$_selectedDuration ${_selectedDuration == 1 ? 'Day' : 'Days'}',
+                          ),
+                          _buildRow(
+                            'Daily Price',
+                            '৳$_dailyPrice',
+                          ),
+                          const Divider(
+                            height: 24,
+                            color: AppColors.border,
+                          ),
+                          _buildRow(
+                            'Total Payable',
+                            '৳$_totalPayable',
+                            isTotal: true,
                           ),
                         ],
                       ),
@@ -147,272 +413,82 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-
-            // Duration Title & Subtitle
-            const Text(
-              'How long do you need it?',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'Choose a duration to see the total charge.',
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
-            ),
-            const SizedBox(height: 16),
-
-            // Duration Option Radio Cards
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _tiers.length,
-              itemBuilder: (context, index) {
-                final tier = _tiers[index];
-                final isSelected = _selectedIndex == index;
-
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedIndex = index;
-                    });
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    margin: const EdgeInsets.only(bottom: 12),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: isSelected ? const Color(0xFFF1F6F2) : Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: isSelected ? primaryColor : Colors.grey.shade300,
-                        width: isSelected ? 1.5 : 1.0,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Radio<int>(
-                          value: index,
-                          groupValue: _selectedIndex,
-                          activeColor: primaryColor,
-                          onChanged: (val) {
-                            if (val != null) setState(() => _selectedIndex = val);
-                          },
-                        ),
-                        Text(
-                          tier['label'],
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                        if (tier['isPopular']) ...[
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Row(
-                              children: [
-                                Text('Popular ', style: TextStyle(fontSize: 11)),
-                                Icon(Icons.star, size: 11, color: primaryColor),
-                              ],
-                            ),
-                          ),
-                        ],
-                        const Spacer(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              '৳${tier['price']} / day',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              tier['rangeText'],
-                              style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-
-            // Tip Banner
             Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFAF4EA),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.access_time, color: primaryColor),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'The longer you keep it, the lower the daily price, but the total charge will increase with time.',
-                      style: TextStyle(fontSize: 12, color: Colors.grey.shade800),
+              color: AppColors.surface,
+              padding: const EdgeInsets.all(16),
+              child: SafeArea(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryDark,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28),
+                      ),
+                      elevation: 0,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Breakdown Card
-            Card(
-              elevation: 0,
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-                side: BorderSide(color: Colors.grey.shade200),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    // Date Selector Row
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Start Date', style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
-                              const SizedBox(height: 4),
-                              const Row(
-                                children: [
-                                  Icon(Icons.calendar_today_outlined, size: 16),
-                                  SizedBox(width: 6),
-                                  Text('20 May 2025', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
-                                ],
-                              ),
-                            ],
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BorrowDetailsScreen(
+                            selectedDuration: _selectedDuration,
+                            dailyPrice: _dailyPrice,
                           ),
                         ),
-                        const Icon(Icons.arrow_forward, color: Colors.grey),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text('End Date', style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
-                              const SizedBox(height: 4),
-                              const Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Icon(Icons.calendar_today_outlined, size: 16),
-                                  SizedBox(width: 6),
-                                  Text('27 May 2025 (8 Days)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Divider(height: 24),
-
-                    // Pricing Details
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Daily Price', style: TextStyle(color: Colors.grey.shade700)),
-                        Text('৳${_tiers[_selectedIndex]['price']}'),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Duration', style: TextStyle(color: Colors.grey.shade700)),
-                        const Text('8 Days'),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Dashed Divider simulation
-                    Row(
-                      children: List.generate(
-                        30,
-                            (index) => Expanded(
-                          child: Container(
-                            color: index % 2 == 0 ? Colors.transparent : Colors.grey.shade300,
-                            height: 1,
-                          ),
-                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Continue',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 12),
-
-                    // Total Payable
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Total Payable', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                        Text(
-                          '৳${_tiers[_selectedIndex]['price'] * 8}',
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: primaryColor),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Continue Button
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4A6844),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const BorrowDetailsScreen(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Continue',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-
-            // Footer note
-            const Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.lock_outline, size: 14, color: Colors.grey),
-                  SizedBox(width: 4),
-                  Text('Secure & Safe Transaction', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildRow(
+      String title,
+      String value, {
+        bool isTotal = false,
+      }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: isTotal ? 16 : 14,
+                fontWeight:
+                isTotal ? FontWeight.w600 : FontWeight.normal,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: isTotal ? 18 : 14,
+              fontWeight:
+              isTotal ? FontWeight.bold : FontWeight.w600,
+              color: isTotal
+                  ? AppColors.primaryDark
+                  : AppColors.textPrimary,
+            ),
+          ),
+        ],
       ),
     );
   }
