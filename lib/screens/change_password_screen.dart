@@ -264,7 +264,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       ),
 
                       const SizedBox(height: 28),
-                      
+
                       SizedBox(
                         width: double.infinity,
                         height: 52,

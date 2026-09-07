@@ -64,7 +64,6 @@ class HelpCenterScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header Card
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
