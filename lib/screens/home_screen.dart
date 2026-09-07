@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -381,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: Colors.white,
               child: Icon(Icons.person, color: AppColors.primary, size: 36),
             ),
-            accountName: Text('Salman F. Rahman', style: TextStyle(fontWeight: FontWeight.bold)),
+            accountName: Text('Salman Rahman', style: TextStyle(fontWeight: FontWeight.bold)),
             accountEmail: Text('Verified Member • Trust Score: 98'),
           ),
           ListTile(
@@ -425,7 +426,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBottomNavBar() {
     return NavigationBar(
       selectedIndex: _currentNavIndex,
-      onDestinationSelected: (index) => setState(() => _currentNavIndex = index),
+      onDestinationSelected: (index) {
+        if (index == 3) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ProfileScreen(),
+            ),
+          );
+        } else {
+          setState(() => _currentNavIndex = index);
+        }
+      },
       backgroundColor: AppColors.surface,
       destinations: const [
         NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: 'Home'),

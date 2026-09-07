@@ -3,7 +3,12 @@ import '../constants/app_colors.dart';
 import 'home_screen.dart';
 
 class TermsConditionsScreen extends StatefulWidget {
-  const TermsConditionsScreen({super.key});
+  final bool isAgreementFlow;
+
+  const TermsConditionsScreen({
+    super.key,
+    this.isAgreementFlow = true,
+  });
 
   @override
   State<TermsConditionsScreen> createState() => _TermsConditionsScreenState();
@@ -102,54 +107,57 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
                 ),
               ),
 
-              const SizedBox(height: 12),
+              if (widget.isAgreementFlow) ...[
+                const SizedBox(height: 12),
 
-              // Agreement Checkbox
-              Row(
-                children: [
-                  Checkbox(
-                    value: _agreed,
-                    activeColor: AppColors.primary,
-                    onChanged: (val) => setState(() => _agreed = val ?? false),
-                  ),
-                  const Expanded(
-                    child: Text(
-                      'I have read and agree to the Terms & Conditions',
-                      style: TextStyle(fontSize: 13, color: AppColors.textPrimary),
+                // Agreement Checkbox
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _agreed,
+                      activeColor: AppColors.primary,
+                      onChanged: (val) => setState(() => _agreed = val ?? false),
                     ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 8),
-
-              // Accept Button
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: _agreed
-                      ? () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (_) => const HomeScreen()),
-                          );
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    disabledBackgroundColor: AppColors.border,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                    const Expanded(
+                      child: Text(
+                        'I have read and agree to the Terms & Conditions',
+                        style: TextStyle(fontSize: 13, color: AppColors.textPrimary),
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    'Accept & Continue',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ],
+                ),
+
+                const SizedBox(height: 8),
+
+                // Accept Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: _agreed
+                        ? () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (_) => const HomeScreen()),
+                              (route) => false,
+                            );
+                          }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      disabledBackgroundColor: AppColors.border,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      'Accept & Continue',
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ],
           ),
         ),

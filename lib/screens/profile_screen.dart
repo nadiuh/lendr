@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
+import 'contact_us_screen.dart';
+import 'help_center_screen.dart';
 import 'login_screen.dart';
+import 'terms_conditions_screen.dart';
 
 class UserProfile {
   final String displayName;
@@ -32,10 +35,10 @@ class UserProfile {
 
   factory UserProfile.placeholder() {
     return const UserProfile(
-      displayName: 'User Name',
-      username: '@username',
-      email: 'user@gmail.com',
-      fullName: 'User Name',
+      displayName: 'Salman Rahman',
+      username: '@salman',
+      email: 'salman12@gmail.com',
+      fullName: 'Salman Rahman',
       phoneNumber: '+880 12 3456 7890',
       location: 'Dhaka, Bangladesh',
       dateJoined: 'August 2026',
@@ -68,22 +71,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     _profile = widget.userProfile ?? UserProfile.placeholder();
-  }
-
-  void _showActionFeedback(String actionName) {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          '$actionName selected',
-          style: GoogleFonts.poppins(color: Colors.white, fontSize: 13),
-        ),
-        backgroundColor: AppColors.primaryDark,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        duration: const Duration(seconds: 2),
-      ),
-    );
   }
 
   void _handleLogout() {
@@ -283,7 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   bottom: 2,
                   right: 2,
                   child: InkWell(
-                    onTap: () => _showActionFeedback('Change Profile Picture'),
+                    onTap: () {},
                     borderRadius: BorderRadius.circular(18),
                     child: Container(
                       padding: const EdgeInsets.all(7),
@@ -412,7 +399,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }) {
     return Expanded(
       child: InkWell(
-        onTap: () => _showActionFeedback(label),
+        onTap: () {},
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -584,14 +571,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _buildSettingsTile(
             icon: Icons.lock_outline_rounded,
             title: 'Change Password',
-            onTap: () => _showActionFeedback('Change Password'),
+            onTap: () {},
           ),
           _buildInnerDivider(),
           _buildSettingsTile(
             icon: Icons.language_rounded,
             title: 'Language Settings',
             trailingText: 'English',
-            onTap: () => _showActionFeedback('Language Settings'),
+            onTap: () {},
           ),
           _buildInnerDivider(),
           _buildSwitchTile(
@@ -602,7 +589,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               setState(() {
                 _notificationsEnabled = value;
               });
-              _showActionFeedback(value ? 'Notifications Enabled' : 'Notifications Disabled');
             },
           ),
           _buildInnerDivider(),
@@ -614,7 +600,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               setState(() {
                 _isDarkMode = value;
               });
-              _showActionFeedback(value ? 'Dark Mode Enabled' : 'Dark Mode Disabled');
             },
             isLast: true,
           ),
@@ -642,25 +627,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _buildSettingsTile(
             icon: Icons.help_outline_rounded,
             title: 'Help Center',
-            onTap: () => _showActionFeedback('Help Center'),
-          ),
-          _buildInnerDivider(),
-          _buildSettingsTile(
-            icon: Icons.privacy_tip_outlined,
-            title: 'Privacy Policy',
-            onTap: () => _showActionFeedback('Privacy Policy'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HelpCenterScreen(),
+                ),
+              );
+            },
           ),
           _buildInnerDivider(),
           _buildSettingsTile(
             icon: Icons.description_outlined,
             title: 'Terms & Conditions',
-            onTap: () => _showActionFeedback('Terms & Conditions'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TermsConditionsScreen(isAgreementFlow: false),
+                ),
+              );
+            },
           ),
           _buildInnerDivider(),
           _buildSettingsTile(
             icon: Icons.contact_support_outlined,
             title: 'Contact Us',
-            onTap: () => _showActionFeedback('Contact Us'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ContactUsScreen(),
+                ),
+              );
+            },
             isLast: true,
           ),
         ],

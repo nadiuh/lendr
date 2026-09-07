@@ -4,6 +4,7 @@ import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../utils/validators.dart';
 import 'login_screen.dart';
+import 'terms_conditions_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -38,10 +39,10 @@ class _SignupScreenState extends State<SignupScreen> {
     });
 
     if (_formKey.currentState?.validate() ?? false) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Creating your account...'),
-          duration: Duration(seconds: 1),
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const TermsConditionsScreen(isAgreementFlow: true),
         ),
       );
     }
