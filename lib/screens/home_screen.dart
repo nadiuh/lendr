@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
+import 'history_screen.dart';
+import 'notifications_screen.dart';
+import 'terms_conditions_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -392,16 +395,6 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () => Navigator.pop(context),
           ),
           ListTile(
-            leading: const Icon(Icons.handshake),
-            title: const Text('Borrow Requests'),
-            onTap: () => Navigator.pop(context),
-          ),
-          ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Alerts'),
-            onTap: () => Navigator.pop(context),
-          ),
-          ListTile(
             leading: const Icon(Icons.list_alt),
             title: const Text('My Listings'),
             onTap: () => Navigator.pop(context),
@@ -409,13 +402,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ListTile(
             leading: const Icon(Icons.history),
             title: const Text('Borrowing History'),
-            onTap: () => Navigator.pop(context),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HistoryScreen()),
+              );
+            },
           ),
-          ListTile(
-            leading: const Icon(Icons.account_balance_wallet),
-            title: const Text('Wallet'),
-            onTap: () => Navigator.pop(context),
-          ),
+
         ],
       ),
     );
@@ -425,7 +420,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBottomNavBar() {
     return NavigationBar(
       selectedIndex: _currentNavIndex,
-      onDestinationSelected: (index) => setState(() => _currentNavIndex = index),
+      onDestinationSelected: (index) {
+        if (index == 2) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const NotificationsScreen()),
+          );
+        } else {
+          setState(() => _currentNavIndex = index);
+        }
+      },
       backgroundColor: AppColors.surface,
       destinations: const [
         NavigationDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home), label: 'Home'),
