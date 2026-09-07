@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
+import 'change_password_screen.dart';
 import 'contact_us_screen.dart';
 import 'help_center_screen.dart';
 import 'login_screen.dart';
@@ -44,8 +45,8 @@ class UserProfile {
       dateJoined: 'August 2026',
       avatarAsset: 'assets/images/Profile_screen/pfp_icon.png',
       itemsLent: 0,
-      itemsBorrowed: 0,
-      activeListings: 0,
+      itemsBorrowed: 3,
+      activeListings: 3,
     );
   }
 }
@@ -571,7 +572,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _buildSettingsTile(
             icon: Icons.lock_outline_rounded,
             title: 'Change Password',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ChangePasswordScreen(),
+                ),
+              );
+            },
           ),
           _buildInnerDivider(),
           _buildSettingsTile(
