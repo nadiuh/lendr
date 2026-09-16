@@ -3,7 +3,6 @@ import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import 'history_screen.dart';
 import 'notifications_screen.dart';
-import 'terms_conditions_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,376 +13,44 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentNavIndex = 0;
-  int _selectedCategoryIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // ---------------- APP BAR ----------------
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: AppColors.background,
-        title: const Text(
-          'Lendr',
-          style: TextStyle(
+        title: Text(
+          _getTitle(),
+          style: const TextStyle(
             color: AppColors.primaryDark,
-            fontSize: 36,
+            fontSize: 28,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
 
-      // ---------------- BODY ----------------
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Motto Banner
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: const Text(
-                'Borrow what you need, share what you have.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+      body: _getBody(),
 
-            // Search Box
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search for an item',
-                  prefixIcon: const Icon(Icons.search),
-                  filled: true,
-                  fillColor: AppColors.inputBackground,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-            ),
+      floatingActionButton: _currentNavIndex == 0
+          ? FloatingActionButton(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              onPressed: () {},
+              child: const Icon(Icons.add),
+            )
+          : null,
 
-            const SizedBox(height: 20),
-
-            // Featured Nearby
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Featured Nearby',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            // ---------------- ITEM 1 ----------------
-            Card(
-              color: AppColors.cream,
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/camera.png',
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Projector',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Text('Lender: Taseen Ehfaz'),
-                              Text('1.2 km away'),
-                            ],
-                          ),
-                        ),
-
-                        Column(
-                          children: [
-                            const Text(
-                              '৳3000/day',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: () {},
-                              child: const Text('Request'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // ---------------- ITEM 2 ----------------
-            Card(
-              color: AppColors.cream,
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/drill.png',
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Drill Machine',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Text('Lender: Sajid Mahin'),
-                              Text('2.0 km away'),
-                            ],
-                          ),
-                        ),
-
-                        Column(
-                          children: [
-                            const Text(
-                              '৳150/day',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: () {},
-                              child: const Text('Request'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // ---------------- ITEM 3 ----------------
-            Card(
-              color: AppColors.cream,
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/tent.png',
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Tent',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Text('Lender: Samin Yasar'),
-                              Text('2.5 km away'),
-                            ],
-                          ),
-                        ),
-
-                        Column(
-                          children: [
-                            const Text(
-                              '৳500/day',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: () {},
-                              child: const Text('Request'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // ---------------- ITEM 4 ----------------
-            Card(
-              color: AppColors.cream,
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/Pressure_Washer.jpeg',
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Pressure Washer',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Text('Lender: Maisara Rupai'),
-                              Text('3.1 km away'),
-                            ],
-                          ),
-                        ),
-
-                        Column(
-                          children: [
-                            const Text(
-                              '৳800/day',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primary,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: () {},
-                              child: const Text('Request'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-          ],
-        ),
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primaryDark,
-        foregroundColor: Colors.white,
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
-
-      // ---------------- BOTTOM NAVIGATION ----------------
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentNavIndex,
         backgroundColor: AppColors.surface,
         selectedItemColor: AppColors.primaryDark,
-        unselectedItemColor: AppColors.primaryLight,
-
-        onTap: (index) async {
-          if(index == 2){
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NotificationsScreen(),
-              ),
-            );
-          }
-
-          else if(index == 3){
-            await Navigator.push(
-              context, 
-              MaterialPageRoute(
-                builder: (context) => const HistoryScreen(),
-              ),
-            );
-          }
+        unselectedItemColor: AppColors.primary,
+        onTap: (index) {
+          setState(() {
+            _currentNavIndex = index;
+          });
         },
-
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -409,5 +76,200 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
 
+  String _getTitle() {
+    if (_currentNavIndex == 0) {
+      return 'Lendr';
+    } else if (_currentNavIndex == 1) {
+      return 'Requests';
+    } else if (_currentNavIndex == 2) {
+      return 'Notifications';
+    } else if (_currentNavIndex == 3) {
+      return 'Borrowing History';
+    } else {
+      return 'Profile';
+    }
+  }
+
+  Widget _getBody() {
+    if (_currentNavIndex == 0) {
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              margin: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: const Text(
+                'Borrow what you need, share what you have.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search for an item',
+                  prefixIcon: const Icon(Icons.search),
+                  filled: true,
+                  fillColor: AppColors.inputBackground,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: const Text(
+                'Featured Nearby',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            _itemCard(
+              name: 'Camera',
+              lender: 'Taseen Ehfaz',
+              distance: '1.2 km away',
+              price: '৳7000/day',
+              image: 'assets/images/camera.png',
+            ),
+
+            _itemCard(
+              name: 'drill',
+              lender: 'Sajid Arefin Mahin',
+              distance: '2.0 km away',
+              price: '৳1500/day',
+              image: 'assets/images/drill.png',
+            ),
+
+            _itemCard(
+              name: 'Pressure_Washer',
+              lender: 'Maisara Khan Rupai',
+              distance: '2.5 km away',
+              price: '৳2500/day',
+              image: 'assets/images/Pressure_Washer.jpeg',
+            ),
+
+            _itemCard(
+              name: 'Tent',
+              lender: 'Samin Yasar',
+              distance: '3.1 km away',
+              price: '৳2800/day',
+              image: 'assets/images/Tent.jpeg',
+            ),
+
+            const SizedBox(height: 20),
+          ],
+        ),
+      );
+    } else if (_currentNavIndex == 1) {
+      return const Center(
+        child: Text('Requests'),
+      );
+    } else if (_currentNavIndex == 2) {
+      return const NotificationsScreen();
+    } else if (_currentNavIndex == 3) {
+      return const HistoryScreen();
+    } else {
+      return const Center(
+        child: Text('Profile'),
+      );
+    }
+  }
+
+  Widget _itemCard({
+    required String name,
+    required String lender,
+    required String distance,
+    required String price,
+    required String image,
+  }) {
+    return Card(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 8,
+      ),
+      color: const Color(0xFFFFF8E7),
+      child: Column(
+        children: [
+          Image.asset(
+            image,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        'Lender: $lender',
+                      ),
+                      Text(
+                        distance,
+                      ),
+                    ],
+                  ),
+                ),
+
+                Column(
+                  children: [
+                    Text(
+                      price,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 6),
+
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () {},
+                      child: const Text('Request'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
