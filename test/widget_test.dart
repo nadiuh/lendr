@@ -55,7 +55,7 @@ void main() {
 
     testWidgets('LoginScreen validates email and password upon submit', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: LoginScreen(),
         ),
       );
