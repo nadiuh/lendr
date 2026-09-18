@@ -2,347 +2,251 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import 'select_duration_screen.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({super.key});
+
+class ItemScreen extends StatelessWidget {
+  const ItemScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppColors.textPrimary,
-          ),
-          onPressed: () {
-            if (Navigator.canPop(context)) {
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () {
               Navigator.pop(context);
-            }
-          },
-        ),
-        title: const Text(
-          'Item Details',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+            },
+            icon: const Icon(Icons.arrow_back),
+          )
       ),
+
       body: Column(
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 280,
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/images/Product_images/DSLR.jpg',
-                        fit: BoxFit.cover,
+
+          // Camera image area
+          Container(
+            height: 230,
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+
+            decoration: BoxDecoration(
+              color: AppColors.cream,
+              borderRadius: BorderRadius.circular(15),
+            ),
+
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.asset(
+                  'assets/images/Product_images/DSLR.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+          ),
+
+          const SizedBox(height: 15),
+
+          // Main information
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: [
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                  children: [
+                    const Text(
+                      "Canon DSLR Camera",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
                       ),
                     ),
-                  ),
 
-                  const SizedBox(height: 16),
-
-                  Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(24),
+                    const Text(
+                      "Available",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.primaryDark,
                       ),
                     ),
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
+                  ],
+                ),
+
+                const SizedBox(height: 5),
+
+                const Row(
+                  children: [
+                    Icon(
+                      Icons.star,
+                      size: 18,
+                      color: AppColors.primary,
+                    ),
+
+                    SizedBox(width: 5),
+
+                    Text(
+                      "4.8",
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 55),
+
+                // Lender information
+                Row(
+                  children: [
+
+                    const CircleAvatar(
+                      radius: 22,
+                      child: Icon(Icons.person),
+                    ),
+
+                    const SizedBox(width: 5),
+
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Canon EOS 5D Mark IV DSLR',
+                        Text(
+                          "Shawon Haque",
                           style: TextStyle(
-                            fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
                           ),
                         ),
 
-                        const SizedBox(height: 8),
-
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryLight,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Text(
-                            'Excellent',
-                            style: TextStyle(
-                              color: AppColors.primaryDark,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 16),
-
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: const [
-                            Text(
-                              '৳1,500',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryDark,
-                              ),
-                            ),
-                            Text(
-                              ' / day',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 2),
-
-                        const Text(
-                          '৳8,000 / week',
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Divider(
-                            height: 1,
-                            color: AppColors.border,
-                          ),
-                        ),
-
-                        Row(
-                          children: const [
-                            Icon(
-                              Icons.check_circle,
-                              color: AppColors.primary,
-                              size: 20,
-                            ),
-                            SizedBox(width: 8),
-                            Text(
-                              'Available Now',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        Row(
-                          children: const [
-                            Icon(
-                              Icons.location_on_outlined,
-                              color: AppColors.textSecondary,
-                              size: 20,
-                            ),
-                            SizedBox(width: 8),
-                            Text(
-                              'Dhanmondi, Dhaka',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        const Text(
-                          'DESCRIPTION',
+                        Text(
+                          "Dhaka, Bangladesh",
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: FontWeight.bold,
                             color: AppColors.textSecondary,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-
-                        const SizedBox(height: 8),
-
-                        const Text(
-                          'Professional full-frame DSLR camera with a 30.4MP sensor. Excellent for portraits, professional photography, and low-light shooting.',
-                          style: TextStyle(
-                            fontSize: 14,
-                            height: 1.4,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-
-                        const SizedBox(height: 24),
-
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: AppColors.inputBackground,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            children: [
-                              const CircleAvatar(
-                                radius: 22,
-                                backgroundImage: AssetImage(
-                                  'assets/images/Product_images/pfp.jpg',
-                                ),
-                              ),
-
-                              const SizedBox(width: 12),
-
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Rahat Ahmed',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                      color: AppColors.textPrimary,
-                                    ),
-                                  ),
-
-                                  const SizedBox(height: 2),
-
-                                  Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.check_circle,
-                                        size: 12,
-                                        color: AppColors.textSecondary,
-                                      ),
-                                      SizedBox(width: 4),
-                                      Text(
-                                        'Verified Lender',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: AppColors.textPrimary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-
-                              const Spacer(),
-
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.surface,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: AppColors.border,
-                                  ),
-                                ),
-                                child: Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                      size: 16,
-                                    ),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      '4.9',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13,
-                                        color: AppColors.textPrimary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                  ],
+                ),
 
-          Container(
-            color: AppColors.surface,
-            padding: const EdgeInsets.all(16),
-            child: SafeArea(
-              child: SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryDark,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                    elevation: 0,
+                const SizedBox(height: 40),
+
+                const Text(
+                  "About this item",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                        const SelectDurationScreen(),
+                ),
+
+                const SizedBox(height: 5),
+
+                const Text(
+                  "High-quality DSLR camera. Perfect for photography, "
+                      "college events and special occasions.",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
+                // Item details
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                  children: [
+
+
+
+                    Column(
+                      children: const [
+                        Icon(
+                          Icons.location_on_outlined,
+                          color: AppColors.primary,
+                        ),
+
+                        SizedBox(height: 0),
+
+                        Text(
+                          "Dhaka",
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
+                    ),
+
+                    Column(
+                      children: const [
+                        Icon(
+                          Icons.verified_outlined,
+                          color: AppColors.primary,
+                        ),
+
+                        SizedBox(height: 5),
+
+                        Text(
+                          "Verified",
+                          style: TextStyle(fontSize: 11),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 100),
+
+                // Price and button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                  children: [
+
+                    const Text(
+                      "৳550 / day",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
                       ),
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.calendar_today_outlined,
-                        color: Colors.white,
-                        size: 20,
+                    ),
+
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SelectDurationScreen(),
+                          ),
+                        );
+                      },
+
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
                       ),
-                      SizedBox(width: 8),
-                      Text(
-                        'Select Duration',
+
+                      child: const Text(
+                        "Select Duration",
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
+              ],
             ),
           ),
         ],
