@@ -10,7 +10,6 @@ class ItemScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-
       appBar: AppBar(
         backgroundColor: AppColors.background,
           elevation: 0,
@@ -24,8 +23,6 @@ class ItemScreen extends StatelessWidget {
 
       body: Column(
         children: [
-
-          // Camera image area
           Container(
             height: 230,
             width: double.infinity,
@@ -102,7 +99,6 @@ class ItemScreen extends StatelessWidget {
 
                 const SizedBox(height: 55),
 
-                // Lender information
                 Row(
                   children: [
 
@@ -160,14 +156,10 @@ class ItemScreen extends StatelessWidget {
 
                 const SizedBox(height: 15),
 
-                // Item details
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                   children: [
-
-
-
                     Column(
                       children: const [
                         Icon(
@@ -204,7 +196,6 @@ class ItemScreen extends StatelessWidget {
 
                 const SizedBox(height: 100),
 
-                // Price and button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
