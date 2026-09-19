@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import 'home_screen.dart';
@@ -11,6 +13,32 @@ class TermsConditionsScreen extends StatefulWidget {
 
 class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
   bool _agreed = false;
+  bool _isLoading = false;
+
+  Future<void> _acceptTerms() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      await FirebaseFirestore.instance.collection('terms_agreements').add({
+        'userEmail': user?.email ?? 'anonymous_user',
+        'userId': user?.uid ?? 'guest',
+        'agreedAt': DateTime.now().toIso8601String(),
+        'status': 'accepted',
+      });
+    } catch (e) {
+      debugPrint('Firebase error: $e');
+    }
+
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    }
+  }
 
   final List<Map<String, String>> _terms = const [
     {
@@ -104,7 +132,7 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
 
               const SizedBox(height: 12),
 
-              // Agreement Checkbox
+              
               Row(
                 children: [
                   Checkbox(
@@ -123,19 +151,12 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
 
               const SizedBox(height: 8),
 
-              // Accept Button
+              
               SizedBox(
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: _agreed
-                      ? () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (_) => const HomeScreen()),
-                          );
-                        }
-                      : null,
+                  onPressed: (_agreed && !_isLoading) ? _acceptTerms : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     disabledBackgroundColor: AppColors.border,
@@ -144,10 +165,22 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
-                    'Accept & Continue',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text(
+                          'Accept & Continue',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ),
             ],

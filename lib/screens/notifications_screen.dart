@@ -1,145 +1,114 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
-import 'home_screen.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.surface,
-        centerTitle: true,
-        title: const Text(
-          'Notifications',
-          style: TextStyle(
-            color: AppColors.primaryDark,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+    // Save screen visit to Firebase Firestore
+    FirebaseFirestore.instance.collection('screen_visits').add({
+      'screen': 'notifications',
+      'visitedAt': DateTime.now().toIso8601String(),
+    });
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        // Notification card container
+        Card(
+          color: AppColors.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: AppColors.border.withValues(alpha: 0.6)),
           ),
-        ),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          // Notification card container
-          Card(
-            color: AppColors.surface,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: BorderSide(color: AppColors.border.withValues(alpha: 0.6)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: const BoxDecoration(
-                    color: AppColors.inputBackground,
-                    border: Border(bottom: BorderSide(color: AppColors.border)),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.circle, size: 8, color: AppColors.primaryDark),
-                      SizedBox(width: 6),
-                      Text(
-                        '2 Unread Notifications',
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Today section
-                _sectionTitle('TODAY'),
-                _notificationTile(
-                  icon: Icons.handshake_rounded,
-                  title: 'Lending Request',
-                  message: 'Anika wants to borrow your Power Drill.',
-                  time: '2m ago',
-                  isUnread: true,
-                ),
-                _notificationTile(
-                  icon: Icons.chat_bubble_rounded,
-                  title: 'Message Received',
-                  message: 'Tasdiq sent a message regarding the Camping Tent.',
-                  time: '45m ago',
-                  isUnread: true,
-                ),
-                _notificationTile(
-                  icon: Icons.schedule_rounded,
-                  title: 'Return Reminder',
-                  message: 'Your Mountain Bike is due back tomorrow.',
-                  time: '3h ago',
-                ),
-
-                const Divider(height: 1, color: AppColors.border),
-
-                // Yesterday section
-                _sectionTitle('YESTERDAY'),
-                _notificationTile(
-                  icon: Icons.task_alt_rounded,
-                  title: 'Lending Confirmed',
-                  message: 'Zami has accepted your request for the Lawn Mower.',
-                  time: '1d ago',
-                ),
-                _notificationTile(
-                  icon: Icons.info_outline_rounded,
-                  title: 'System Update',
-                  message: 'New community guidelines are now active.',
-                  time: '1d ago',
-                ),
-                const SizedBox(height: 12),
-              ],
-            ),
-          ),
-
-          // Footer
-          const SizedBox(height: 16),
-          const Text(
-            'Lendr Notifications • Real-time alerts',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 11, color: AppColors.textLight),
-          ),
-          const SizedBox(height: 4),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.eco, size: 14, color: AppColors.primary),
-              SizedBox(width: 4),
-              Text(
-                'Together saving resources through community sharing',
-                style: TextStyle(fontSize: 11, color: AppColors.primaryDark),
+              // Header
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: const BoxDecoration(
+                  color: AppColors.inputBackground,
+                  border: Border(bottom: BorderSide(color: AppColors.border)),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.circle, size: 8, color: AppColors.primaryDark),
+                    SizedBox(width: 6),
+                    Text(
+                      '2 Unread Notifications',
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
+
+              // Today section
+              _sectionTitle('TODAY'),
+              _notificationTile(
+                icon: Icons.handshake_rounded,
+                title: 'Lending Request',
+                message: 'Anika wants to borrow your Power Drill.',
+                time: '2m ago',
+                isUnread: true,
+              ),
+              _notificationTile(
+                icon: Icons.chat_bubble_rounded,
+                title: 'Message Received',
+                message: 'Tasdiq sent a message regarding the Camping Tent.',
+                time: '45m ago',
+                isUnread: true,
+              ),
+              _notificationTile(
+                icon: Icons.schedule_rounded,
+                title: 'Return Reminder',
+                message: 'Your Mountain Bike is due back tomorrow.',
+                time: '3h ago',
+              ),
+
+              const Divider(height: 1, color: AppColors.border),
+
+              // Yesterday section
+              _sectionTitle('YESTERDAY'),
+              _notificationTile(
+                icon: Icons.task_alt_rounded,
+                title: 'Lending Confirmed',
+                message: 'Zami has accepted your request for the Lawn Mower.',
+                time: '1d ago',
+              ),
+              _notificationTile(
+                icon: Icons.info_outline_rounded,
+                title: 'System Update',
+                message: 'New community guidelines are now active.',
+                time: '1d ago',
+              ),
+              const SizedBox(height: 12),
             ],
           ),
-        ],
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: 2,
-        onDestinationSelected: (index) {
-          if (index == 0) {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            } else {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const HomeScreen()),
-              );
-            }
-          }
-        },
-        backgroundColor: const Color(0xFFECEFEA),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home_outlined), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.handshake_outlined), label: 'Requests'),
-          NavigationDestination(icon: Icon(Icons.notifications_rounded), label: 'Alerts'),
-          NavigationDestination(icon: Icon(Icons.person_outline), label: 'Profile'),
-        ],
-      ),
+        ),
+
+        // Footer
+        const SizedBox(height: 16),
+        const Text(
+          'Lendr Notifications • Real-time alerts',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 11, color: AppColors.textLight),
+        ),
+        const SizedBox(height: 4),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.eco, size: 14, color: AppColors.primary),
+            SizedBox(width: 4),
+            Text(
+              'Together saving resources through community sharing',
+              style: TextStyle(fontSize: 11, color: AppColors.primaryDark),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+import 'firebase_options.dart';
 import 'package:lendr_new/screens/history_screen.dart';
 import 'constants/app_colors.dart';
 import 'constants/app_strings.dart';
@@ -6,7 +9,13 @@ import 'screens/home_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/terms_conditions_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -32,7 +41,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/notifications': (context) => const NotificationsScreen(),
         '/terms': (context) => const TermsConditionsScreen(),
-        '/history':(context) => const HistoryScreen(),
+        '/history': (context) => const HistoryScreen(),
       },
     );
   }

@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
+import 'add_item_screen.dart';
 import 'history_screen.dart';
 import 'notifications_screen.dart';
+import 'request_item_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,7 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ? FloatingActionButton(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => AddItemScreen()),
+                );
+              },
               child: const Icon(Icons.add),
             )
           : null,
@@ -260,7 +268,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        // Save borrow request to Firebase Firestore
+                        FirebaseFirestore.instance.collection('borrow_requests').add({
+                          'itemName': name,
+                          'lender': lender,
+                          'price': price,
+                          'requestedAt': DateTime.now().toIso8601String(),
+                        });
+                      },
                       child: const Text('Request'),
                     ),
                   ],
