@@ -2,23 +2,48 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import 'select_duration_screen.dart';
 
-
 class ItemScreen extends StatelessWidget {
-  const ItemScreen({super.key});
+  final String imagePath;
+  final String itemName;
+  final String price;
+  final String lender;
+
+  const ItemScreen({
+    super.key,
+    required this.imagePath,
+    required this.itemName,
+    required this.price,
+    required this.lender,
+  });
+
+  String getItemDescription() {
+    if (itemName == 'Camera') {
+      return 'High-quality camera, perfect for photography, college events and special occasions.';
+    } else if (itemName == 'Drill Machine') {
+      return 'Useful drill machine, perfect for home repairs, DIY projects and construction work.';
+    } else if (itemName == 'Pressure Washer') {
+      return 'Powerful pressure washer, perfect for cleaning cars, floors and outdoor areas.';
+    } else if (itemName == 'Tent') {
+      return 'Comfortable tent, perfect for camping, outdoor trips and special occasions.';
+    } else {
+      return 'High-quality $itemName, perfect for personal use, events and special occasions.';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+
       appBar: AppBar(
         backgroundColor: AppColors.background,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back),
-          )
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
 
       body: Column(
@@ -27,45 +52,37 @@ class ItemScreen extends StatelessWidget {
             height: 230,
             width: double.infinity,
             margin: const EdgeInsets.symmetric(horizontal: 20),
-
             decoration: BoxDecoration(
               color: AppColors.cream,
               borderRadius: BorderRadius.circular(15),
             ),
-
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                  'assets/images/Product_images/DSLR.jpg',
-                  fit: BoxFit.cover,
-                ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
               ),
+            ),
           ),
 
           const SizedBox(height: 15),
 
-          // Main information
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-
               children: [
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                   children: [
-                    const Text(
-                      "Canon DSLR Camera",
-                      style: TextStyle(
+                    Text(
+                      itemName,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
                       ),
                     ),
-
                     const Text(
                       "Available",
                       style: TextStyle(
@@ -85,9 +102,7 @@ class ItemScreen extends StatelessWidget {
                       size: 18,
                       color: AppColors.primary,
                     ),
-
                     SizedBox(width: 5),
-
                     Text(
                       "4.8",
                       style: TextStyle(
@@ -101,26 +116,23 @@ class ItemScreen extends StatelessWidget {
 
                 Row(
                   children: [
-
                     const CircleAvatar(
                       radius: 22,
                       child: Icon(Icons.person),
                     ),
-
                     const SizedBox(width: 5),
 
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Shawon Haque",
-                          style: TextStyle(
+                          lender,
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
                           ),
                         ),
-
-                        Text(
+                        const Text(
                           "Dhaka, Bangladesh",
                           style: TextStyle(
                             fontSize: 12,
@@ -145,10 +157,9 @@ class ItemScreen extends StatelessWidget {
 
                 const SizedBox(height: 5),
 
-                const Text(
-                  "High-quality DSLR camera. Perfect for photography, "
-                      "college events and special occasions.",
-                  style: TextStyle(
+                Text(
+                  getItemDescription(),
+                  style: const TextStyle(
                     fontSize: 13,
                     color: AppColors.textSecondary,
                   ),
@@ -158,7 +169,6 @@ class ItemScreen extends StatelessWidget {
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                   children: [
                     Column(
                       children: const [
@@ -166,9 +176,7 @@ class ItemScreen extends StatelessWidget {
                           Icons.location_on_outlined,
                           color: AppColors.primary,
                         ),
-
                         SizedBox(height: 0),
-
                         Text(
                           "Dhaka",
                           style: TextStyle(fontSize: 11),
@@ -182,9 +190,7 @@ class ItemScreen extends StatelessWidget {
                           Icons.verified_outlined,
                           color: AppColors.primary,
                         ),
-
                         SizedBox(height: 5),
-
                         Text(
                           "Verified",
                           style: TextStyle(fontSize: 11),
@@ -198,12 +204,10 @@ class ItemScreen extends StatelessWidget {
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                   children: [
-
-                    const Text(
-                      "৳550 / day",
-                      style: TextStyle(
+                    Text(
+                      price,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
@@ -215,11 +219,14 @@ class ItemScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SelectDurationScreen(),
+                            builder: (context) => SelectDurationScreen(
+                              itemName: itemName,
+                              price: price,
+                              lender: lender,
+                            ),
                           ),
                         );
                       },
-
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         padding: const EdgeInsets.symmetric(
@@ -227,7 +234,6 @@ class ItemScreen extends StatelessWidget {
                           vertical: 12,
                         ),
                       ),
-
                       child: const Text(
                         "Select Duration",
                         style: TextStyle(
