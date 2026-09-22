@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: AppColors.background,
@@ -44,16 +45,46 @@ class MyApp extends StatelessWidget {
           surface: AppColors.surface,
         ),
       ),
+
       home: const HomeScreen(),
+
       routes: {
         '/home': (context) => const HomeScreen(),
-        '/notifications': (context) => const NotificationsScreen(),
-        '/terms': (context) => const TermsConditionsScreen(),
-        '/history': (context) => const HistoryScreen(),
-        '/item_details': (context) => const ItemScreen(),
-        '/select_duration': (context) => const SelectDurationScreen(),
-        '/borrow_details': (context) => const BorrowDetailsScreen(selectedDuration: 1, dailyPrice: 550),
-        '/my_bookings': (context) => const MyBookingsScreen(),
+
+        '/notifications': (context) =>
+        const NotificationsScreen(),
+
+        '/terms': (context) =>
+        const TermsConditionsScreen(),
+
+        '/history': (context) =>
+        const HistoryScreen(),
+
+        '/item_details': (context) => const ItemScreen(
+          imagePath: 'assets/images/camera.png',
+          itemName: 'Camera',
+          price: '৳7000/day',
+          lender: 'Taseen Ehfaz',
+        ),
+
+        '/select_duration': (context) =>
+        const SelectDurationScreen(
+          itemName: 'Camera',
+          price: '৳7000/day',
+          lender: 'Taseen Ehfaz',
+        ),
+
+        '/borrow_details': (context) =>
+        const BorrowDetailsScreen(
+          selectedDuration: 1,
+          dailyPrice: 550,
+          itemName: 'Camera',
+          price: '৳7000/day',
+          lender: 'Taseen Ehfaz',
+        ),
+
+        '/my_bookings': (context) =>
+        const MyBookingsScreen(),
       },
     );
   }

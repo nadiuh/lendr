@@ -1,43 +1,43 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
-import 'my_bookings_screen.dart';
 
-class BorrowDetailsScreen extends StatefulWidget {
+class BorrowDetailsScreen extends StatelessWidget {
   final int selectedDuration;
   final int dailyPrice;
+  final String itemName;
+  final String price;
+  final String lender;
 
   const BorrowDetailsScreen({
     super.key,
     required this.selectedDuration,
     required this.dailyPrice,
+    required this.itemName,
+    required this.price,
+    required this.lender,
   });
 
   @override
-  State<BorrowDetailsScreen> createState() => _BorrowDetailsScreenState();
-}
-
-class _BorrowDetailsScreenState extends State<BorrowDetailsScreen> {
-
-  @override
   Widget build(BuildContext context) {
+    int totalPrice = selectedDuration * dailyPrice;
+
     return Scaffold(
       backgroundColor: AppColors.background,
 
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back),
         ),
-
         title: const Text(
-          "Borrow Details",
+          'Borrow Details',
           style: TextStyle(
             color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -49,137 +49,125 @@ class _BorrowDetailsScreenState extends State<BorrowDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-
-            const Text(
-              "Borrow Request",
-              style: TextStyle(
-                fontSize: 20,
+            Text(
+              itemName,
+              style: const TextStyle(
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
               ),
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: 5),
 
-            const Text(
-              "Enter your details to send a borrow request.",
-              style: TextStyle(
-                fontSize: 14,
+            Text(
+              'Lender: $lender',
+              style: const TextStyle(
                 color: AppColors.textSecondary,
               ),
             ),
 
-            const SizedBox(height: 55),
+            const SizedBox(height: 30),
 
             const Text(
-              "Item",
+              'Borrowing Information',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
               ),
             ),
 
-            const SizedBox(height: 8),
-
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(15),
-
-              decoration: BoxDecoration(
-                color: AppColors.cream,
-                borderRadius: BorderRadius.circular(12),
-              ),
-
-              child: const Text(
-                "Canon DSLR Camera",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 50),
+            const SizedBox(height: 20),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
               children: [
+                const Text('Item'),
+                Text(itemName),
+              ],
+            ),
 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(height: 15),
 
-                  children: [
-                    const Text(
-                      "Duration",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Price'),
+                Text(price),
+              ],
+            ),
 
-                    const SizedBox(height:5),
+            const SizedBox(height: 15),
 
-                    Text(
-                      "${widget.selectedDuration} day(s)",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                  ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Duration'),
+                Text('$selectedDuration day(s)'),
+              ],
+            ),
+
+            const SizedBox(height: 15),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Daily Price'),
+                Text('৳$dailyPrice'),
+              ],
+            ),
+
+            const SizedBox(height: 15),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Total Price',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-
-                  children: [
-                    const Text(
-                      "Daily Price",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-
-                    const SizedBox(height: 5),
-
-                    Text(
-                      "৳${widget.dailyPrice}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                  ],
+                Text(
+                  '৳$totalPrice',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
+
+            const SizedBox(height: 30),
+
+            const Text(
+              'Message',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
+            ),
+
+            const SizedBox(height: 10),
 
             const Spacer(),
 
             SizedBox(
               width: double.infinity,
-
               child: ElevatedButton(
                 onPressed: () {
                 },
-
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(
-                    vertical: 15,
+                    vertical: 14,
                   ),
                 ),
-
                 child: const Text(
-                  "Send Borrow Request",
+                  'Send Borrow Request',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
                   ),
                 ),
               ),
@@ -190,4 +178,3 @@ class _BorrowDetailsScreenState extends State<BorrowDetailsScreen> {
     );
   }
 }
-

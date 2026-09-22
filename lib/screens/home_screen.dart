@@ -23,32 +23,34 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _currentNavIndex == 1
           ? null
           : AppBar(
-              centerTitle: true,
-              backgroundColor: AppColors.background,
-              title: Text(
-                _getTitle(),
-                style: const TextStyle(
-                  color: AppColors.primaryDark,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+        centerTitle: true,
+        backgroundColor: AppColors.background,
+        title: Text(
+          _getTitle(),
+          style: const TextStyle(
+            color: AppColors.primaryDark,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
 
       body: _getBody(),
 
       floatingActionButton: _currentNavIndex == 0
           ? FloatingActionButton(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => AddItemScreen()),
-                );
-              },
-              child: const Icon(Icons.add),
-            )
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => AddItemScreen(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
+      )
           : null,
 
       bottomNavigationBar: BottomNavigationBar(
@@ -225,7 +227,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ItemScreen(),
+              builder: (context) => ItemScreen(
+                imagePath: image,
+                itemName: name,
+                price: price,
+                lender: lender,
+              ),
             ),
           );
         },
@@ -279,22 +286,31 @@ class _HomeScreenState extends State<HomeScreen> {
                           foregroundColor: Colors.white,
                         ),
                         onPressed: () {
-                          // Save borrow request to Firebase Firestore
                           try {
-                            FirebaseFirestore.instance.collection('borrow_requests').add({
+                            FirebaseFirestore.instance
+                                .collection('borrow_requests')
+                                .add({
                               'itemName': name,
                               'lender': lender,
                               'price': price,
-                              'requestedAt': DateTime.now().toIso8601String(),
+                              'requestedAt':
+                              DateTime.now().toIso8601String(),
                             });
                           } catch (e) {
-                            debugPrint('Error saving borrow request: $e');
+                            debugPrint(
+                              'Error saving borrow request: $e',
+                            );
                           }
 
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ItemScreen(),
+                              builder: (context) => ItemScreen(
+                                imagePath: image,
+                                itemName: name,
+                                price: price,
+                                lender: lender,
+                              ),
                             ),
                           );
                         },
