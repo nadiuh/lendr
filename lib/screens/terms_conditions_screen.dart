@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import 'home_screen.dart';
@@ -16,6 +18,32 @@ class TermsConditionsScreen extends StatefulWidget {
 
 class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
   bool _agreed = false;
+  bool _isLoading = false;
+
+  Future<void> _acceptTerms() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      await FirebaseFirestore.instance.collection('terms_agreements').add({
+        'userEmail': user?.email ?? 'anonymous_user',
+        'userId': user?.uid ?? 'guest',
+        'agreedAt': DateTime.now().toIso8601String(),
+        'status': 'accepted',
+      });
+    } catch (e) {
+      debugPrint('Firebase error: $e');
+    }
+
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    }
+  }
 
   final List<Map<String, String>> _terms = const [
     {
@@ -110,52 +138,64 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
               if (widget.isAgreementFlow) ...[
                 const SizedBox(height: 12),
 
-                // Agreement Checkbox
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _agreed,
-                      activeColor: AppColors.primary,
-                      onChanged: (val) => setState(() => _agreed = val ?? false),
-                    ),
-                    const Expanded(
-                      child: Text(
-                        'I have read and agree to the Terms & Conditions',
-                        style: TextStyle(fontSize: 13, color: AppColors.textPrimary),
-                      ),
-                    ),
-                  ],
-                ),
+// Agreement Checkbox
+Row(
+children: [
+Checkbox(
+value: _agreed,
+activeColor: AppColors.primary,
+onChanged: (val) {
+setState(() {
+_agreed = val ?? false;
+});
+},
+),
+const Expanded(
+child: Text(
+'I have read and agree to the Terms & Conditions',
+style: TextStyle(
+fontSize: 13,
+color: AppColors.textPrimary,
+),
+),
+),
+],
+),
 
-                const SizedBox(height: 8),
+const SizedBox(height: 8),
 
-                // Accept Button
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: _agreed
-                        ? () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (_) => const HomeScreen()),
-                              (route) => false,
-                            );
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      disabledBackgroundColor: AppColors.border,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text(
-                      'Accept & Continue',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                  ),
+// Accept Button
+SizedBox(
+width: double.infinity,
+height: 48,
+child: ElevatedButton(
+onPressed: (_agreed && !_isLoading) ? _acceptTerms : null,
+style: ElevatedButton.styleFrom(
+backgroundColor: AppColors.primary,
+disabledBackgroundColor: AppColors.border,
+foregroundColor: Colors.white,
+shape: RoundedRectangleBorder(
+borderRadius: BorderRadius.circular(12),
+),
+),
+child: _isLoading
+? const SizedBox(
+height: 20,
+width: 20,
+child: CircularProgressIndicator(
+color: Colors.white,
+strokeWidth: 2,
+),
+)
+: const Text(
+'Accept & Continue',
+style: TextStyle(
+fontSize: 15,
+fontWeight: FontWeight.bold,
+),
+),
+),
+),
                 ),
               ],
             ],

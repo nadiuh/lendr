@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "786608406748",
+    "project_id": "lendr-borrow-share",
+    "storage_bucket": "lendr-borrow-share.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786608406748:android:d2ff3056f3b890b5e83419",
+        "android_client_info": {
+          "package_name": "com.example.lendr_new"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZnwDGoxTFbaxEC5ah15Tf1lJfnM-H1yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

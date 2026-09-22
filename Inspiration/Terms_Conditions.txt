@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Terms and Conditions - Lendr</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e2e2e2",
+                        "on-tertiary-container": "#ffb79d",
+                        "surface-tint": "#6d23f9",
+                        "on-secondary-fixed": "#00201c",
+                        "primary-container": "#6200ee",
+                        "secondary": "#006a60",
+                        "surface-bright": "#f9f9f9",
+                        "on-surface-variant": "#494456",
+                        "tertiary-fixed": "#ffdbcf",
+                        "on-background": "#1a1c1c",
+                        "secondary-fixed-dim": "#17deca",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "tertiary": "#6f2300",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "outline": "#7a7488",
+                        "secondary-container": "#4af8e3",
+                        "on-secondary-container": "#006f64",
+                        "inverse-primary": "#cfbdff",
+                        "surface-container": "#eeeeee",
+                        "inverse-surface": "#2f3131",
+                        "secondary-fixed": "#4ffbe6",
+                        "outline-variant": "#cbc3d9",
+                        "surface": "#f9f9f9",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#e8ddff",
+                        "tertiary-container": "#963200",
+                        "on-tertiary-fixed": "#380d00",
+                        "primary-fixed-dim": "#cfbdff",
+                        "surface-container-high": "#e8e8e8",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#22005d",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#005048",
+                        "surface-container-low": "#f3f3f3",
+                        "on-primary-fixed-variant": "#5300cd",
+                        "inverse-on-surface": "#f1f1f1",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#1a1c1c",
+                        "background": "#f9f9f9",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-dim": "#dadada",
+                        "primary": "#4800b2",
+                        "on-primary-container": "#d0beff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "md": "16px",
+                        "gutter": "16px",
+                        "container-margin": "16px",
+                        "base": "8px",
+                        "xl": "32px",
+                        "sm": "12px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-lg": ["Poppins"],
+                        "body-lg": ["Poppins"],
+                        "headline-md": ["Poppins"],
+                        "headline-sm": ["Poppins"],
+                        "body-md": ["Poppins"],
+                        "headline-lg-mobile": ["Poppins"],
+                        "label-md": ["Poppins"],
+                        "headline-lg": ["Poppins"]
+                    },
+                    "fontSize": {
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.5px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-[#EFE8DB] min-h-screen flex flex-col antialiased relative selection:bg-[#7A9B76]/20 selection:text-black">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-[#EFE8DB] flat no shadows flex items-center justify-between px-4 h-16 max-w-7xl mx-auto border-b border-[#DED7CB]">
+<button class="p-2 rounded-full hover:bg-black/5 transition-colors active:scale-95 duration-200 text-[#2D312E] flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-[#2D312E] absolute left-1/2 -translate-x-1/2">Terms &amp; Conditions</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col px-md py-lg pb-32 max-w-2xl mx-auto w-full relative z-10">
+<!-- Scrollable Surface Container -->
+<div class="bg-[#FFFFFF] rounded-[24px] p-lg shadow-[0_4px_24px_rgba(222,215,203,0.4)] flex-1 overflow-y-auto mb-lg ring-1 ring-[#DED7CB]">
+<div class="space-y-xl">
+<!-- Section 1 -->
+<section>
+<div class="flex items-center gap-base mb-sm">
+<span class="material-symbols-outlined text-[#7A9B76] text-xl" data-icon="info">info</span>
+<h2 class="font-label-lg text-label-lg text-[#7A9B76] uppercase tracking-wider font-semibold">1. Introduction</h2>
+</div>
+<p class="font-body-md text-body-md text-[#6E746F] leading-relaxed">
+                        Welcome to Lendr. By accessing or using our platform, you agree to be bound by these Terms and Conditions. Lendr is a community-driven marketplace facilitating peer-to-peer lending and borrowing of physical assets. Please read these terms carefully before engaging in any transactions.
+                    </p>
+</section>
+<!-- Section 2 -->
+<section>
+<div class="flex items-center gap-base mb-sm">
+<span class="material-symbols-outlined text-[#7A9B76] text-xl" data-icon="gavel">gavel</span>
+<h2 class="font-label-lg text-label-lg text-[#7A9B76] uppercase tracking-wider font-semibold">2. User Responsibilities</h2>
+</div>
+<p class="font-body-md text-body-md text-[#6E746F] leading-relaxed mb-sm">
+                        As a user of Lendr, you are expected to interact with other community members with respect and honesty. You agree to:
+                    </p>
+<ul class="list-disc pl-5 font-body-md text-body-md text-[#6E746F] leading-relaxed space-y-2">
+<li>Provide accurate information regarding items you list for lending.</li>
+<li>Return borrowed items in the same condition they were received, normal wear and tear excepted.</li>
+<li>Communicate promptly and resolve any disputes amicably through the platform.</li>
+</ul>
+</section>
+<!-- Section 3 -->
+<section>
+<div class="flex items-center gap-base mb-sm">
+<span class="material-symbols-outlined text-[#7A9B76] text-xl" data-icon="handshake">handshake</span>
+<h2 class="font-label-lg text-label-lg text-[#7A9B76] uppercase tracking-wider font-semibold">3. Lending &amp; Borrowing Rules</h2>
+</div>
+<p class="font-body-md text-body-md text-[#6E746F] leading-relaxed">
+                        All transactions are strictly between the Lender and the Borrower. Lendr acts solely as a facilitator. Lenders must ensure their items are safe for use. Borrowers must adhere to the agreed-upon return dates and any specific usage guidelines provided by the Lender. Late returns may incur penalties as defined in our community guidelines.
+                    </p>
+</section>
+<!-- Section 4 -->
+<section>
+<div class="flex items-center gap-base mb-sm">
+<span class="material-symbols-outlined text-[#7A9B76] text-xl" data-icon="shield">shield</span>
+<h2 class="font-label-lg text-label-lg text-[#7A9B76] uppercase tracking-wider font-semibold">4. Liability</h2>
+</div>
+<p class="font-body-md text-body-md text-[#6E746F] leading-relaxed">
+                        Lendr is not liable for any damage, loss, or injury resulting from the use of items borrowed through the platform. Users assume all risks associated with lending and borrowing physical assets. We strongly recommend documenting the condition of items before and after each transaction.
+                    </p>
+</section>
+<div class="h-8"></div> <!-- Bottom padding for scroll -->
+</div>
+</div>
+</main>
+<!-- Fixed Bottom Actions -->
+<div class="fixed bottom-0 left-0 w-full bg-[#EFE8DB]/90 backdrop-blur-md pt-md pb-lg px-md z-40 shadow-[0_-4px_20px_rgba(222,215,203,0.4)] border-t border-[#DED7CB]">
+<div class="max-w-2xl mx-auto flex flex-col gap-sm">
+<button class="w-full bg-[#7A9B76] text-white font-label-lg text-label-lg py-4 rounded-[16px] flex items-center justify-center gap-2 hover:bg-[#688564] active:scale-[0.98] transition-all shadow-md">
+                Accept &amp; Continue
+                <span class="material-symbols-outlined text-sm" data-icon="check_circle">check_circle</span>
+</button>
+<button class="w-full bg-transparent text-[#2D312E] font-label-lg text-label-lg py-3 rounded-[16px] flex items-center justify-center hover:bg-black/5 active:scale-[0.98] transition-all">
+                Decline
+            </button>
+</div>
+</div>
+</body></html>
