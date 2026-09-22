@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'screens/item_details_screen.dart';
+import 'constants/app_colors.dart';
+import 'constants/app_strings.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -11,15 +14,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Lendr',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF7A9B76),
-        ),
-        useMaterial3: true,
-      ),
-      home: const ProductDetailsScreen(),
+      home: const ItemScreen(),
     );
   }
 }
