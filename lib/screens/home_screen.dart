@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             _itemCard(
-              name: 'drill',
+              name: 'Drill Machine',
               lender: 'Sajid Arefin Mahin',
               distance: '2.0 km away',
               price: '৳1500/day',
@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             _itemCard(
-              name: 'Pressure_Washer',
+              name: 'Pressure Washer',
               lender: 'Maisara Khan Rupai',
               distance: '2.5 km away',
               price: '৳2500/day',
