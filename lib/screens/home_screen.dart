@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
-import '../constants/app_strings.dart';
 import 'add_item_screen.dart';
 import 'history_screen.dart';
 import 'notifications_screen.dart';
-import 'request_item_screen.dart';
+import 'item_details_screen.dart';
+import 'my_bookings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,18 +20,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: AppColors.background,
-        title: Text(
-          _getTitle(),
-          style: const TextStyle(
-            color: AppColors.primaryDark,
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      appBar: _currentNavIndex == 1
+          ? null
+          : AppBar(
+              centerTitle: true,
+              backgroundColor: AppColors.background,
+              title: Text(
+                _getTitle(),
+                style: const TextStyle(
+                  color: AppColors.primaryDark,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
 
       body: _getBody(),
 
@@ -192,9 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
     } else if (_currentNavIndex == 1) {
-      return const Center(
-        child: Text('Requests'),
-      );
+      return const MyBookingsScreen();
     } else if (_currentNavIndex == 2) {
       return const NotificationsScreen();
     } else if (_currentNavIndex == 3) {
@@ -219,72 +219,94 @@ class _HomeScreenState extends State<HomeScreen> {
         vertical: 8,
       ),
       color: const Color(0xFFFFF8E7),
-      child: Column(
-        children: [
-          Image.asset(
-            image,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ItemScreen(),
+            ),
+          );
+        },
+        child: Column(
+          children: [
+            Image.asset(
+              image,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
 
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Lender: $lender',
+                        ),
+                        Text(
+                          distance,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Column(
                     children: [
                       Text(
-                        name,
+                        price,
                         style: const TextStyle(
-                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        'Lender: $lender',
-                      ),
-                      Text(
-                        distance,
+
+                      const SizedBox(height: 6),
+
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () {
+                          // Save borrow request to Firebase Firestore
+                          try {
+                            FirebaseFirestore.instance.collection('borrow_requests').add({
+                              'itemName': name,
+                              'lender': lender,
+                              'price': price,
+                              'requestedAt': DateTime.now().toIso8601String(),
+                            });
+                          } catch (e) {
+                            debugPrint('Error saving borrow request: $e');
+                          }
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ItemScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text('Request'),
                       ),
                     ],
                   ),
-                ),
-
-                Column(
-                  children: [
-                    Text(
-                      price,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    const SizedBox(height: 6),
-
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: () {
-                        // Save borrow request to Firebase Firestore
-                        FirebaseFirestore.instance.collection('borrow_requests').add({
-                          'itemName': name,
-                          'lender': lender,
-                          'price': price,
-                          'requestedAt': DateTime.now().toIso8601String(),
-                        });
-                      },
-                      child: const Text('Request'),
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -2,19 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
-import 'package:lendr_new/screens/history_screen.dart';
 import 'constants/app_colors.dart';
 import 'constants/app_strings.dart';
 import 'screens/home_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/terms_conditions_screen.dart';
+import 'screens/history_screen.dart';
+import 'screens/item_details_screen.dart';
+import 'screens/select_duration_screen.dart';
+import 'screens/borrow_details_screen.dart';
+import 'screens/my_bookings_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    debugPrint('Firebase initialization skipped/failed: $e');
+  }
 
   runApp(const MyApp());
 }
@@ -42,6 +50,10 @@ class MyApp extends StatelessWidget {
         '/notifications': (context) => const NotificationsScreen(),
         '/terms': (context) => const TermsConditionsScreen(),
         '/history': (context) => const HistoryScreen(),
+        '/item_details': (context) => const ItemScreen(),
+        '/select_duration': (context) => const SelectDurationScreen(),
+        '/borrow_details': (context) => const BorrowDetailsScreen(selectedDuration: 1, dailyPrice: 550),
+        '/my_bookings': (context) => const MyBookingsScreen(),
       },
     );
   }
