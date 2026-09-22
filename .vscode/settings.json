@@ -1,4 +1,5 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "cmake.sourceDirectory": "C:/Users/Shofina Sultana/OneDrive/Documents/Lendr/windows"
+    "cmake.sourceDirectory": "C:/Users/Shofina Sultana/OneDrive/Documents/Lendr/windows",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
