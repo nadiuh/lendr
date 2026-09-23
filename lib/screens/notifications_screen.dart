@@ -10,6 +10,8 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
+  String errorMessage = '';
+
   @override
   void initState() {
     super.initState();
@@ -22,8 +24,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         'screen': 'notifications',
         'visitedAt': DateTime.now().toIso8601String(),
       });
-    } catch (e) {
-      debugPrint('Error recording screen visit: $e');
+    } on FirebaseException catch (e) {
+      setState(() {
+        errorMessage = e.message ?? 'Could not record visit';
+      });
     }
   }
 

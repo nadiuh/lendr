@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
-import 'borrow_details_screen.dart';
+import 'home_screen.dart';
 
 class SelectDurationScreen extends StatefulWidget {
   final String itemName;
@@ -67,18 +68,14 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
 
             Text(
               'Lender: ${widget.lender}',
-              style: const TextStyle(
-                color: AppColors.textSecondary,
-              ),
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
 
             const SizedBox(height: 5),
 
             Text(
               widget.price,
-              style: const TextStyle(
-                color: AppColors.textSecondary,
-              ),
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
 
             const SizedBox(height: 30),
@@ -109,9 +106,7 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
                       ? AppColors.primary
                       : AppColors.cream,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.primary,
-                  ),
+                  border: Border.all(color: AppColors.primary),
                 ),
                 child: Text(
                   '1 Day',
@@ -141,9 +136,7 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
                       ? AppColors.primary
                       : AppColors.cream,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.primary,
-                  ),
+                  border: Border.all(color: AppColors.primary),
                 ),
                 child: Text(
                   '3 Days',
@@ -173,9 +166,7 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
                       ? AppColors.primary
                       : AppColors.cream,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.primary,
-                  ),
+                  border: Border.all(color: AppColors.primary),
                 ),
                 child: Text(
                   '7 Days',
@@ -207,31 +198,33 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BorrowDetailsScreen(
-                        selectedDuration: selectedDuration,
-                        dailyPrice: dailyPrice,
-                        itemName: widget.itemName,
-                        price: widget.price,
-                        lender: widget.lender,
-                      ),
+                      builder: (context) => const HomeScreen(),
                     ),
+                    (route) => false,
                   );
+
+                  FirebaseFirestore.instance
+                      .collection('borrow_requests')
+                      .add({
+                        'itemName': widget.itemName,
+                        'lender': widget.lender,
+                        'price': widget.price,
+                        'duration': selectedDuration,
+                        'dailyPrice': dailyPrice,
+                        'totalPrice': selectedDuration * dailyPrice,
+                        'requestedAt': DateTime.now().toIso8601String(),
+                      });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 14,
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
                 child: const Text(
                   'Continue',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),

@@ -9,6 +9,8 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  String errorMessage = '';
+
   @override
   void initState() {
     super.initState();
@@ -21,8 +23,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
         'screen': 'history',
         'visitedAt': DateTime.now().toIso8601String(),
       });
-    } catch (e) {
-      debugPrint('Error recording screen visit: $e');
+    } on FirebaseException catch (e) {
+      setState(() {
+        errorMessage = e.message ?? 'Could not record visit';
+      });
     }
   }
 

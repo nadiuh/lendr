@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
@@ -6,174 +7,90 @@ class MyBookingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('borrow_requests')
+          .orderBy('requestedAt', descending: true)
+          .snapshots(),
+      builder: (context, snapshot) {
+        final docs = snapshot.data?.docs ?? [];
 
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
-
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
-
-        title: const Text(
-          "My Bookings",
-          style: TextStyle(
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ),
-
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-
-          children: [
-
-            const Text(
-              "Your Booking",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
+        if (docs.isEmpty) {
+          return const Center(
+            child: Text(
+              'No bookings yet.',
+              style: TextStyle(fontSize: 16, color: AppColors.textSecondary),
             ),
+          );
+        }
 
-            const SizedBox(height: 20),
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: docs.length,
+          itemBuilder: (context, index) {
+            final data = docs[index].data() as Map<String, dynamic>;
 
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-
-              decoration: BoxDecoration(
-                color: AppColors.cream,
+            return Card(
+              color: AppColors.cream,
+              margin: const EdgeInsets.only(bottom: 12),
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
-
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-
-                children: [
-
-                  Row(
-                    children: [
-
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-
-                        child: Image.asset(
-                          'assets/images/Product_images/DSLR.jpg',
-                          height:90,
-                          width: 100,
-                          fit: BoxFit.cover,
-                        ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      data['itemName'] ?? 'Unknown Item',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
                       ),
-
-                      const SizedBox(width: 15),
-
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-
-                        children: [
-
-                          Text(
-                            "Canon DSLR Camera",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-
-                          SizedBox(height: 5),
-
-                          Text(
-                            "Shawon Haque",
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-
-                          SizedBox(height: 5),
-
-                          Text(
-                            "৳550 / day",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primaryDark,
-                            ),
-                          ),
-                        ],
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Lender: ${data['lender'] ?? 'Unknown'}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textSecondary,
                       ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  const Text(
-                    "Booking Details",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
                     ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  const Text(
-                    "Duration: 7 days",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-
-                  const SizedBox(height: 5),
-
-                  const Text(
-                    "Total: ৳3850",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryLight,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-
-                    child: const Text(
-                      "Request Sent",
-                      style: TextStyle(
-                        fontSize: 12,
+                    const SizedBox(height: 4),
+                    Text(
+                      data['price'] ?? '',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                         color: AppColors.primaryDark,
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryLight,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        'Request Sent',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.primaryDark,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
+            );
+          },
+        );
+      },
     );
   }
 }

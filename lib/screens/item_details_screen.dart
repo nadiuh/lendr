@@ -46,7 +46,8 @@ class ItemScreen extends StatelessWidget {
         ),
       ),
 
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         children: [
           Container(
             height: 230,
@@ -247,6 +248,7 @@ class ItemScreen extends StatelessWidget {
             ),
           ),
         ],
+        ),
       ),
     );
   }

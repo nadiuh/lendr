@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
+import 'select_duration_screen.dart';
 
 class RequestItemScreen extends StatefulWidget {
   final String name;
@@ -33,17 +34,19 @@ class _RequestItemScreenState extends State<RequestItemScreen> {
         'requestedAt': DateTime.now().toIso8601String(),
       });
 
-      if (!mounted) return;
-      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SelectDurationScreen(
+            itemName: widget.name,
+            price: widget.price,
+            lender: widget.lender,
+          ),
+        ),
+      );
     } on FirebaseException catch (e) {
-      if (!mounted) return;
       setState(() {
         errorMessage = e.message ?? 'Could not confirm request';
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        errorMessage = 'Could not confirm request';
       });
     }
   }
@@ -131,10 +134,7 @@ class _RequestItemScreenState extends State<RequestItemScreen> {
 
             if (errorMessage.isNotEmpty) ...[
               const SizedBox(height: 10),
-              Text(
-                errorMessage,
-                style: const TextStyle(color: Colors.red),
-              ),
+              Text(errorMessage, style: const TextStyle(color: Colors.red)),
             ],
 
             const SizedBox(height: 24),
@@ -154,10 +154,7 @@ class _RequestItemScreenState extends State<RequestItemScreen> {
                 onPressed: confirmRequest,
                 child: const Text(
                   'Confirm Request',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

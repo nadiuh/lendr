@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../constants/app_colors.dart';
 
 class AddItemScreen extends StatefulWidget {
@@ -14,6 +16,16 @@ class _AddItemScreenState extends State<AddItemScreen> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _distanceController = TextEditingController();
   String errorMessage = '';
+  File? _selectedImage;
+
+  void pickImage() async {
+    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (picked != null) {
+      setState(() {
+        _selectedImage = File(picked.path);
+      });
+    }
+  }
 
   void addItem() async {
     if (_nameController.text.trim().isEmpty) {
@@ -35,17 +47,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
         'createdAt': DateTime.now().toIso8601String(),
       });
 
-      if (!mounted) return;
       Navigator.pop(context);
     } on FirebaseException catch (e) {
-      if (!mounted) return;
       setState(() {
         errorMessage = e.message ?? 'Could not add item';
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        errorMessage = 'Could not add item';
       });
     }
   }
@@ -74,10 +79,42 @@ class _AddItemScreenState extends State<AddItemScreen> {
           ),
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            GestureDetector(
+              onTap: pickImage,
+              child: Container(
+                height: 180,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.inputBackground,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: _selectedImage != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.file(
+                          _selectedImage!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        ),
+                      )
+                    : const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add_a_photo, size: 40, color: AppColors.primary),
+                          SizedBox(height: 8),
+                          Text('Tap to add photo'),
+                        ],
+                      ),
+              ),
+            ),
+
+            const SizedBox(height: 14),
+
             TextField(
               controller: _nameController,
               decoration: InputDecoration(

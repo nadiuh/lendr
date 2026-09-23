@@ -38,21 +38,13 @@ class _BorrowDetailsScreenState extends State<BorrowDetailsScreen> {
         'requestedAt': DateTime.now().toIso8601String(),
       });
 
-      if (!mounted) return;
       setState(() {
         message = 'Borrow request sent successfully!';
         errorMessage = '';
       });
     } on FirebaseException catch (e) {
-      if (!mounted) return;
       setState(() {
         errorMessage = e.message ?? 'Could not send borrow request';
-        message = '';
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        errorMessage = 'Could not send borrow request';
         message = '';
       });
     }
