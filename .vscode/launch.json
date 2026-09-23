@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Lendr (Chrome Web)",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "chrome"
+        },
+        {
+            "name": "Lendr (Edge Web)",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "edge"
+        },
+        {
+            "name": "Lendr (Windows)",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "windows"
+        }
+    ]
+}
