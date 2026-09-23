@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
-class BorrowDetailsScreen extends StatelessWidget {
+class BorrowDetailsScreen extends StatefulWidget {
   final int selectedDuration;
   final int dailyPrice;
   final String itemName;
@@ -18,8 +19,48 @@ class BorrowDetailsScreen extends StatelessWidget {
   });
 
   @override
+  State<BorrowDetailsScreen> createState() => _BorrowDetailsScreenState();
+}
+
+class _BorrowDetailsScreenState extends State<BorrowDetailsScreen> {
+  String errorMessage = '';
+  String message = '';
+
+  void sendBorrowRequest() async {
+    try {
+      await FirebaseFirestore.instance.collection('borrow_requests').add({
+        'itemName': widget.itemName,
+        'lender': widget.lender,
+        'price': widget.price,
+        'duration': widget.selectedDuration,
+        'dailyPrice': widget.dailyPrice,
+        'totalPrice': widget.selectedDuration * widget.dailyPrice,
+        'requestedAt': DateTime.now().toIso8601String(),
+      });
+
+      if (!mounted) return;
+      setState(() {
+        message = 'Borrow request sent successfully!';
+        errorMessage = '';
+      });
+    } on FirebaseException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        errorMessage = e.message ?? 'Could not send borrow request';
+        message = '';
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        errorMessage = 'Could not send borrow request';
+        message = '';
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    int totalPrice = selectedDuration * dailyPrice;
+    int totalPrice = widget.selectedDuration * widget.dailyPrice;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -50,7 +91,7 @@ class BorrowDetailsScreen extends StatelessWidget {
 
           children: [
             Text(
-              itemName,
+              widget.itemName,
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -61,7 +102,7 @@ class BorrowDetailsScreen extends StatelessWidget {
             const SizedBox(height: 5),
 
             Text(
-              'Lender: $lender',
+              'Lender: ${widget.lender}',
               style: const TextStyle(
                 color: AppColors.textSecondary,
               ),
@@ -84,7 +125,7 @@ class BorrowDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text('Item'),
-                Text(itemName),
+                Text(widget.itemName),
               ],
             ),
 
@@ -94,7 +135,7 @@ class BorrowDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text('Price'),
-                Text(price),
+                Text(widget.price),
               ],
             ),
 
@@ -104,7 +145,7 @@ class BorrowDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text('Duration'),
-                Text('$selectedDuration day(s)'),
+                Text('${widget.selectedDuration} day(s)'),
               ],
             ),
 
@@ -114,7 +155,7 @@ class BorrowDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text('Daily Price'),
-                Text('৳$dailyPrice'),
+                Text('৳${widget.dailyPrice}'),
               ],
             ),
 
@@ -151,13 +192,23 @@ class BorrowDetailsScreen extends StatelessWidget {
 
             const SizedBox(height: 10),
 
+            if (errorMessage.isNotEmpty)
+              Text(
+                errorMessage,
+                style: const TextStyle(color: Colors.red),
+              ),
+            if (message.isNotEmpty)
+              Text(
+                message,
+                style: const TextStyle(color: Colors.green),
+              ),
+
             const Spacer(),
 
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                },
+                onPressed: sendBorrowRequest,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(

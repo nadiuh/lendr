@@ -2,16 +2,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
-class NotificationsScreen extends StatelessWidget {
+class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
 
   @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _recordVisit();
+  }
+
+  void _recordVisit() async {
+    try {
+      await FirebaseFirestore.instance.collection('screen_visits').add({
+        'screen': 'notifications',
+        'visitedAt': DateTime.now().toIso8601String(),
+      });
+    } catch (e) {
+      debugPrint('Error recording screen visit: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Save screen visit to Firebase Firestore
-    FirebaseFirestore.instance.collection('screen_visits').add({
-      'screen': 'notifications',
-      'visitedAt': DateTime.now().toIso8601String(),
-    });
 
     return ListView(
       padding: const EdgeInsets.all(16),
