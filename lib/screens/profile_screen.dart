@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'change_password_screen.dart';
 import 'contact_us_screen.dart';
 import 'help_center_screen.dart';
@@ -13,10 +14,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
+  String errorMessage = "";
+
   bool notifications = true;
   bool darkMode = false;
 
-  void logout() {
+  void logout() async {
     showDialog(
       context: context,
       builder: (context) {
@@ -32,16 +35,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(context);
 
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
-                  ),
-                      (route) => false,
-                );
+                try {
+                  await FirebaseAuth.instance.signOut();
+
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginScreen(),
+                    ),
+                        (route) => false,
+                  );
+                } on FirebaseAuthException catch (e) {
+                  setState(() {
+                    errorMessage=e.message ?? 'Could not log out';
+                  });
+                }
               },
               child: Text("Log Out"),
             ),
@@ -293,6 +304,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             SizedBox(height: 30),
+
+            Text(
+              errorMessage,
+              style: TextStyle(color: Colors.red),
+            ),
+
+            SizedBox(height: 10),
 
             SizedBox(
               width: double.infinity,

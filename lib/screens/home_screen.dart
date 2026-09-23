@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
-import '../constants/app_strings.dart';
-
 import 'profile_screen.dart';
 import 'add_item_screen.dart';
 import 'history_screen.dart';
@@ -202,9 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (_currentNavIndex == 3) {
       return const HistoryScreen();
     } else {
-      return const Center(
-        child: Text('Profile'),
-      );
+      return const ProfileScreen();
     }
   }
 
@@ -271,7 +267,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         foregroundColor: Colors.white,
                       ),
                       onPressed: () {
-                        // Save borrow request to Firebase Firestore
                         FirebaseFirestore.instance.collection('borrow_requests').add({
                           'itemName': name,
                           'lender': lender,

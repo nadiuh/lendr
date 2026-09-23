@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Save screen visit to Firebase Firestore
     FirebaseFirestore.instance.collection('screen_visits').add({
       'screen': 'history',
       'visitedAt': DateTime.now().toIso8601String(),

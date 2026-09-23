@@ -125,7 +125,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
             Text(
               errorMessage,
-              style:TextStyle(color: Colors.red),
+              style:TextStyle(color: Colors.black),
             ),
 
             SizedBox(height: 20),
