@@ -3,36 +3,47 @@ import '../constants/app_colors.dart';
 import 'borrow_details_screen.dart';
 
 class SelectDurationScreen extends StatefulWidget {
-  const SelectDurationScreen({super.key});
+  final String itemName;
+  final String price;
+  final String lender;
+
+  const SelectDurationScreen({
+    super.key,
+    required this.itemName,
+    required this.price,
+    required this.lender,
+  });
 
   @override
   State<SelectDurationScreen> createState() => _SelectDurationScreenState();
 }
 
 class _SelectDurationScreenState extends State<SelectDurationScreen> {
-
   int selectedDuration = 1;
 
   @override
   Widget build(BuildContext context) {
+    int dailyPrice = int.parse(
+      widget.price.replaceAll('৳', '').replaceAll('/day', ''),
+    );
+
     return Scaffold(
       backgroundColor: AppColors.background,
 
       appBar: AppBar(
         backgroundColor: AppColors.background,
         elevation: 0,
-
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back),
         ),
-
         title: const Text(
-          "Select Duration",
+          'Select Duration',
           style: TextStyle(
             color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -42,24 +53,30 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
-
-            const Text(
-              "How long do you need this item?",
-              style: TextStyle(
-                fontSize: 20,
+            Text(
+              widget.itemName,
+              style: const TextStyle(
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
               ),
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: 5),
 
-            const Text(
-              "Choose the number of days you want to borrow it.",
-              style: TextStyle(
-                fontSize: 14,
+            Text(
+              'Lender: ${widget.lender}',
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+              ),
+            ),
+
+            const SizedBox(height: 5),
+
+            Text(
+              widget.price,
+              style: const TextStyle(
                 color: AppColors.textSecondary,
               ),
             ),
@@ -67,9 +84,118 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
             const SizedBox(height: 30),
 
             const Text(
-              "Select Duration",
+              'How long do you need this item?',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedDuration = 1;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: selectedDuration == 1
+                      ? AppColors.primary
+                      : AppColors.cream,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.primary,
+                  ),
+                ),
+                child: Text(
+                  '1 Day',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: selectedDuration == 1
+                        ? Colors.white
+                        : AppColors.textPrimary,
+                  ),
+                ),
+              ),
+            ),
+
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedDuration = 3;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: selectedDuration == 3
+                      ? AppColors.primary
+                      : AppColors.cream,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.primary,
+                  ),
+                ),
+                child: Text(
+                  '3 Days',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: selectedDuration == 3
+                        ? Colors.white
+                        : AppColors.textPrimary,
+                  ),
+                ),
+              ),
+            ),
+
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedDuration = 7;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: selectedDuration == 7
+                      ? AppColors.primary
+                      : AppColors.cream,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.primary,
+                  ),
+                ),
+                child: Text(
+                  '7 Days',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: selectedDuration == 7
+                        ? Colors.white
+                        : AppColors.textPrimary,
+                  ),
+                ),
+              ),
+            ),
+
+            const Spacer(),
+
+            Text(
+              '৳$dailyPrice / day',
+              style: const TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
               ),
@@ -77,135 +203,8 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
 
             const SizedBox(height: 15),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-              children: [
-
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedDuration = 1;
-                    });
-                  },
-
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedDuration == 1
-                        ? AppColors.primary
-                        : AppColors.cream,
-                  ),
-
-                  child: Text(
-                    "1 Day",
-                    style: TextStyle(
-                      color: selectedDuration == 1
-                          ? Colors.white
-                          : AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedDuration = 3;
-                    });
-                  },
-
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedDuration == 3
-                        ? AppColors.primary
-                        : AppColors.cream,
-                  ),
-
-                  child: Text(
-                    "3 Days",
-                    style: TextStyle(
-                      color: selectedDuration == 3
-                          ? Colors.white
-                          : AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedDuration = 7;
-                    });
-                  },
-
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedDuration == 7
-                        ? AppColors.primary
-                        : AppColors.cream,
-                  ),
-
-                  child: Text(
-                    "7 Days",
-                    style: TextStyle(
-                      color: selectedDuration == 7
-                          ? Colors.white
-                          : AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 30),
-
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-
-              decoration: BoxDecoration(
-                color: AppColors.cream,
-                borderRadius: BorderRadius.circular(15),
-              ),
-
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-
-                children: [
-
-                  const Text(
-                    "Selected Duration",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  Text(
-                    "$selectedDuration day(s)",
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  const Text(
-                    "৳550 per day",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const Spacer(),
-
             SizedBox(
               width: double.infinity,
-
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -213,21 +212,22 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
                     MaterialPageRoute(
                       builder: (context) => BorrowDetailsScreen(
                         selectedDuration: selectedDuration,
-                        dailyPrice: 550,
+                        dailyPrice: dailyPrice,
+                        itemName: widget.itemName,
+                        price: widget.price,
+                        lender: widget.lender,
                       ),
                     ),
                   );
                 },
-
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(
-                    vertical: 15,
+                    vertical: 14,
                   ),
                 ),
-
                 child: const Text(
-                  "Continue",
+                  'Continue',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
