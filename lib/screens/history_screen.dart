@@ -6,7 +6,6 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Save screen visit to Firebase Firestore
     FirebaseFirestore.instance.collection('screen_visits').add({
       'screen': 'history',
       'visitedAt': DateTime.now().toIso8601String(),

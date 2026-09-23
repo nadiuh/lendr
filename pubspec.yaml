@@ -66,6 +66,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/Logo/
+    - assets/images/Profile_screen/
     - assets/images/Product_images/
     - lib/Images/
 

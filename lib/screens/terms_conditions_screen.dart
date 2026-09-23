@@ -1,190 +1,110 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import 'home_screen.dart';
 
-class TermsConditionsScreen extends StatefulWidget {
+class TermsConditionsScreen extends StatelessWidget {
   const TermsConditionsScreen({super.key});
-
-  @override
-  State<TermsConditionsScreen> createState() => _TermsConditionsScreenState();
-}
-
-class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
-  bool _agreed = false;
-  bool _isLoading = false;
-
-  Future<void> _acceptTerms() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      await FirebaseFirestore.instance.collection('terms_agreements').add({
-        'userEmail': user?.email ?? 'anonymous_user',
-        'userId': user?.uid ?? 'guest',
-        'agreedAt': DateTime.now().toIso8601String(),
-        'status': 'accepted',
-      });
-    } catch (e) {
-      debugPrint('Firebase error: $e');
-    }
-
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
-      );
-    }
-  }
-
-  final List<Map<String, String>> _terms = const [
-    {
-      'title': '1. Acceptance of Terms',
-      'body': 'By using Lendr, you agree to these Terms and our Privacy Policy.',
-    },
-    {
-      'title': '2. User Accounts',
-      'body': 'You must be at least 18 years old and provide accurate information.',
-    },
-    {
-      'title': '3. Lending & Borrowing',
-      'body': 'Treat borrowed items with care and return them on time in original condition.',
-    },
-    {
-      'title': '4. Payments & Deposits',
-      'body': 'All fees and security deposits are shown before confirmation.',
-    },
-    {
-      'title': '5. Prohibited Items',
-      'body': 'Illegal, hazardous, or counterfeit items are strictly prohibited.',
-    },
-    {
-      'title': '6. Liability',
-      'body': 'Users borrow and lend at their own risk. Use our dispute center if issues arise.',
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+
       appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
+        title: Text('Terms & Conditions'),
         centerTitle: true,
-        title: const Text(
-          'Terms & Conditions',
-          style: TextStyle(
-            color: AppColors.primaryDark,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
+        backgroundColor: AppColors.background,
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              // Scrollable Terms List
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  child: ListView.separated(
-                    itemCount: _terms.length,
-                    separatorBuilder: (_, _) => const Divider(color: AppColors.border, height: 24),
-                    itemBuilder: (context, index) {
-                      final item = _terms[index];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item['title']!,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            item['body']!,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: AppColors.textSecondary,
-                              height: 1.4,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+
+      body: Padding(
+        padding: EdgeInsets.all(20),
+
+        child: Column(
+          children: [
+
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    Text(
+                      '1. Acceptance of Terms',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'By using Lendr, you agree to these Terms and our Privacy Policy.',
+                    ),
+
+                    SizedBox(height: 20),
+
+                    Text(
+                      '2. User Accounts',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'You must provide accurate information when creating an account.',
+                    ),
+
+                    SizedBox(height: 20),
+
+                    Text(
+                      '3. Lending and Borrowing',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Treat borrowed items with care and return them on time.',
+                    ),
+
+                    SizedBox(height: 20),
+
+                    Text(
+                      '4. Payments and Deposits',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Fees and security deposits are shown before confirmation.',
+                    ),
+
+                    SizedBox(height: 20),
+
+                    Text(
+                      '5. Prohibited Items',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Illegal, hazardous, or counterfeit items are not allowed.',
+                    ),
+
+                    SizedBox(height: 20),
+
+                    Text(
+                      '6. Liability',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Users are responsible for the items they lend and borrow.',
+                    ),
+                  ],
                 ),
               ),
+            ),
 
-              const SizedBox(height: 12),
-
-              
-              Row(
-                children: [
-                  Checkbox(
-                    value: _agreed,
-                    activeColor: AppColors.primary,
-                    onChanged: (val) => setState(() => _agreed = val ?? false),
-                  ),
-                  const Expanded(
-                    child: Text(
-                      'I have read and agree to the Terms & Conditions',
-                      style: TextStyle(fontSize: 13, color: AppColors.textPrimary),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
                     ),
-                  ),
-                ],
+                  );
+                },
+                child: Text('I Agree'),
               ),
-
-              const SizedBox(height: 8),
-
-              
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: (_agreed && !_isLoading) ? _acceptTerms : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    disabledBackgroundColor: AppColors.border,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : const Text(
-                          'Accept & Continue',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
