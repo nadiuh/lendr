@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
@@ -8,6 +7,7 @@ import 'notifications_screen.dart';
 import 'item_details_screen.dart';
 import 'my_bookings_screen.dart';
 import 'profile_screen.dart';
+import 'request_item_screen.dart';
 
 class HomeScreen extends StatefulWidget {
 const HomeScreen({super.key});
@@ -285,36 +285,15 @@ style: ElevatedButton.styleFrom(
 backgroundColor: AppColors.primary,
 foregroundColor: Colors.white,
 ),
-onPressed: () async {
-try {
-await FirebaseFirestore.instance
-.collection('borrow_requests')
-.add({
-'itemName': name,
-'lender': lender,
-'price': price,
-'requestedAt':
-DateTime.now().toIso8601String(),
-});
-} on FirebaseException catch (e) {
-debugPrint(
-'Error saving borrow request: ${e.message}',
-);
-} catch (e) {
-debugPrint(
-'Error saving borrow request: $e',
-);
-}
-
-if (!mounted) return;
+onPressed: () {
 Navigator.push(
 context,
 MaterialPageRoute(
-builder: (context) => ItemScreen(
-imagePath: image,
-itemName: name,
-price: price,
+builder: (context) => RequestItemScreen(
+name: name,
 lender: lender,
+price: price,
+distance: distance,
 ),
 ),
 );
