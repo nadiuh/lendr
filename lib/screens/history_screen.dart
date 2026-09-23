@@ -1,16 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    FirebaseFirestore.instance.collection('screen_visits').add({
-      'screen': 'history',
-      'visitedAt': DateTime.now().toIso8601String(),
-    });
+  State<HistoryScreen> createState() => _HistoryScreenState();
+}
 
+class _HistoryScreenState extends State<HistoryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _recordVisit();
+  }
+
+  void _recordVisit() async {
+    try {
+      await FirebaseFirestore.instance.collection('screen_visits').add({
+        'screen': 'history',
+        'visitedAt': DateTime.now().toIso8601String(),
+      });
+    } catch (e) {
+      debugPrint('Error recording screen visit: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [

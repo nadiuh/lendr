@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
-class RequestItemScreen extends StatelessWidget {
+class RequestItemScreen extends StatefulWidget {
   final String name;
   final String lender;
   final String price;
@@ -15,6 +15,38 @@ class RequestItemScreen extends StatelessWidget {
     required this.price,
     required this.distance,
   });
+
+  @override
+  State<RequestItemScreen> createState() => _RequestItemScreenState();
+}
+
+class _RequestItemScreenState extends State<RequestItemScreen> {
+  String errorMessage = '';
+
+  void confirmRequest() async {
+    try {
+      await FirebaseFirestore.instance.collection('borrow_requests').add({
+        'itemName': widget.name,
+        'lender': widget.lender,
+        'price': widget.price,
+        'distance': widget.distance,
+        'requestedAt': DateTime.now().toIso8601String(),
+      });
+
+      if (!mounted) return;
+      Navigator.pop(context);
+    } on FirebaseException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        errorMessage = e.message ?? 'Could not confirm request';
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        errorMessage = 'Could not confirm request';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +81,7 @@ class RequestItemScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      widget.name,
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -57,7 +89,7 @@ class RequestItemScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Lender: $lender',
+                      'Lender: ${widget.lender}',
                       style: const TextStyle(
                         fontSize: 16,
                         color: AppColors.textSecondary,
@@ -65,7 +97,7 @@ class RequestItemScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      distance,
+                      widget.distance,
                       style: const TextStyle(
                         fontSize: 14,
                         color: AppColors.textSecondary,
@@ -83,7 +115,7 @@ class RequestItemScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          price,
+                          widget.price,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -96,6 +128,14 @@ class RequestItemScreen extends StatelessWidget {
                 ),
               ),
             ),
+
+            if (errorMessage.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              Text(
+                errorMessage,
+                style: const TextStyle(color: Colors.red),
+              ),
+            ],
 
             const SizedBox(height: 24),
 
@@ -111,25 +151,7 @@ class RequestItemScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                onPressed: () {
-                  // Save borrow request to Firebase Firestore
-                  FirebaseFirestore.instance.collection('borrow_requests').add({
-                    'itemName': name,
-                    'lender': lender,
-                    'price': price,
-                    'distance': distance,
-                    'requestedAt': DateTime.now().toIso8601String(),
-                  });
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Borrow request sent to Firebase!'),
-                      backgroundColor: AppColors.primary,
-                    ),
-                  );
-
-                  Navigator.pop(context);
-                },
+                onPressed: confirmRequest,
                 child: const Text(
                   'Confirm Request',
                   style: TextStyle(

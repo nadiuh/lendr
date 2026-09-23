@@ -285,9 +285,9 @@ style: ElevatedButton.styleFrom(
 backgroundColor: AppColors.primary,
 foregroundColor: Colors.white,
 ),
-onPressed: () {
+onPressed: () async {
 try {
-FirebaseFirestore.instance
+await FirebaseFirestore.instance
 .collection('borrow_requests')
 .add({
 'itemName': name,
@@ -296,12 +296,17 @@ FirebaseFirestore.instance
 'requestedAt':
 DateTime.now().toIso8601String(),
 });
+} on FirebaseException catch (e) {
+debugPrint(
+'Error saving borrow request: ${e.message}',
+);
 } catch (e) {
 debugPrint(
 'Error saving borrow request: $e',
 );
 }
 
+if (!mounted) return;
 Navigator.push(
 context,
 MaterialPageRoute(

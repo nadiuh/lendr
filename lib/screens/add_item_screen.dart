@@ -2,12 +2,61 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
-class AddItemScreen extends StatelessWidget {
-  AddItemScreen({super.key});
+class AddItemScreen extends StatefulWidget {
+  const AddItemScreen({super.key});
 
+  @override
+  State<AddItemScreen> createState() => _AddItemScreenState();
+}
+
+class _AddItemScreenState extends State<AddItemScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _distanceController = TextEditingController();
+  String errorMessage = '';
+
+  void addItem() async {
+    if (_nameController.text.trim().isEmpty) {
+      setState(() {
+        errorMessage = 'Please enter item name';
+      });
+      return;
+    }
+
+    try {
+      await FirebaseFirestore.instance.collection('items').add({
+        'name': _nameController.text.trim(),
+        'price': _priceController.text.trim().isEmpty
+            ? '৳1000/day'
+            : _priceController.text.trim(),
+        'distance': _distanceController.text.trim().isEmpty
+            ? '1.0 km away'
+            : _distanceController.text.trim(),
+        'createdAt': DateTime.now().toIso8601String(),
+      });
+
+      if (!mounted) return;
+      Navigator.pop(context);
+    } on FirebaseException catch (e) {
+      if (!mounted) return;
+      setState(() {
+        errorMessage = e.message ?? 'Could not add item';
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        errorMessage = 'Could not add item';
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _priceController.dispose();
+    _distanceController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +118,11 @@ class AddItemScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 24),
+            Text(
+              errorMessage,
+              style: const TextStyle(color: Colors.red),
+            ),
+            const SizedBox(height: 20),
 
             SizedBox(
               width: double.infinity,
@@ -82,30 +135,7 @@ class AddItemScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                onPressed: () {
-                  if (_nameController.text.trim().isEmpty) return;
-
-                  // Save item to Firebase Firestore
-                  FirebaseFirestore.instance.collection('items').add({
-                    'name': _nameController.text.trim(),
-                    'price': _priceController.text.trim().isEmpty
-                        ? '৳1000/day'
-                        : _priceController.text.trim(),
-                    'distance': _distanceController.text.trim().isEmpty
-                        ? '1.0 km away'
-                        : _distanceController.text.trim(),
-                    'createdAt': DateTime.now().toIso8601String(),
-                  });
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Item added to Firebase!'),
-                      backgroundColor: AppColors.primary,
-                    ),
-                  );
-
-                  Navigator.pop(context);
-                },
+                onPressed: addItem,
                 child: const Text(
                   'Add Item',
                   style: TextStyle(
