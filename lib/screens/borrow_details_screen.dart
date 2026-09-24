@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
+import 'home_screen.dart';
 
 class BorrowDetailsScreen extends StatefulWidget {
   final int selectedDuration;
@@ -38,11 +39,14 @@ class _BorrowDetailsScreenState extends State<BorrowDetailsScreen> {
         'requestedAt': DateTime.now().toIso8601String(),
       });
 
-      setState(() {
-        message = 'Borrow request sent successfully!';
-        errorMessage = '';
-      });
+      if (!mounted) return;
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+        (route) => false,
+      );
     } on FirebaseException catch (e) {
+      if (!mounted) return;
       setState(() {
         errorMessage = e.message ?? 'Could not send borrow request';
         message = '';

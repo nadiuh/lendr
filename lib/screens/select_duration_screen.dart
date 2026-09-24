@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
-import 'home_screen.dart';
+import 'borrow_details_screen.dart';
 
 class SelectDurationScreen extends StatefulWidget {
   final String itemName;
@@ -198,25 +197,18 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
+                      builder: (context) => BorrowDetailsScreen(
+                        itemName: widget.itemName,
+                        lender: widget.lender,
+                        price: widget.price,
+                        selectedDuration: selectedDuration,
+                        dailyPrice: dailyPrice,
+                      ),
                     ),
-                    (route) => false,
                   );
-
-                  FirebaseFirestore.instance
-                      .collection('borrow_requests')
-                      .add({
-                        'itemName': widget.itemName,
-                        'lender': widget.lender,
-                        'price': widget.price,
-                        'duration': selectedDuration,
-                        'dailyPrice': dailyPrice,
-                        'totalPrice': selectedDuration * dailyPrice,
-                        'requestedAt': DateTime.now().toIso8601String(),
-                      });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
